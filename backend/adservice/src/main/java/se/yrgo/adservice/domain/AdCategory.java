@@ -15,6 +15,11 @@ public class AdCategory {
     public AdCategory() {
     }
 
+    public AdCategory(Integer id, String categoryName) {
+        this.id = id;
+        this.categoryName = categoryName;
+    }
+
     public Integer getId() {
         return id;
     }

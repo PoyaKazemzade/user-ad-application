@@ -6,6 +6,7 @@ import se.yrgo.listingservice.data.AdCopyRepository;
 import se.yrgo.listingservice.domain.AdCopy;
 
 import java.util.Date;
+import java.util.HashMap;
 
 @Service
 public class AdServiceJmsListener {
@@ -16,8 +17,11 @@ public class AdServiceJmsListener {
     }
 
     @JmsListener(destination = "adQueue")
-    public void receiveMessage(String message) {
-        AdCopy newAdCopy = new AdCopy();
+    public void receiveMessage(HashMap<String, String> message) {
+
+        message.forEach((key, value) -> System.out.println(key + ": " + value));
+
+ /*       AdCopy newAdCopy = new AdCopy();
 
         // need to parse the received message here, dummy code atm
         newAdCopy.setTitle(message);
@@ -26,6 +30,6 @@ public class AdServiceJmsListener {
         newAdCopy.setPrice(0);
         newAdCopy.setCreatedDate(new Date());
 
-        adCopyData.save(newAdCopy);
+        adCopyData.save(newAdCopy);*/
     }
 }
