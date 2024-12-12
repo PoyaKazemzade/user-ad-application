@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,32 +15,26 @@ public class Ad implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-
     private String userName;
-
+    private String title;
+    private String description;
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime created;
+    private Integer price;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private AdCategory category;
 
-    private String title;
-
-    private String description;
-
-    private Date createDate;
-
-    private Integer price;
-
     public Ad() {
     }
 
-    public Ad(Integer id, String userName, AdCategory category, String title, String description, Date createDate, Integer price) {
+    public Ad(Integer id, String userName, AdCategory category, String title, String description, LocalDateTime created, Integer price) {
         this.id = id;
         this.userName = userName;
         this.category = category;
         this.title = title;
         this.description = description;
-        this.createDate = createDate;
+        this.created = created;
         this.price = price;
     }
 
@@ -83,12 +78,12 @@ public class Ad implements Serializable {
         this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 
     public Integer getPrice() {

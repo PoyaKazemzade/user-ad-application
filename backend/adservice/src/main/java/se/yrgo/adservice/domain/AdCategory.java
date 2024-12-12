@@ -9,7 +9,6 @@ public class AdCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String categoryName;
 
     public AdCategory() {

@@ -1,11 +1,8 @@
 package se.yrgo.listingservice.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Represents an ad. Copy of data from the Ad table of Ad Service.
@@ -19,7 +16,8 @@ public class AdCopy {
     private String description;
     private String categoryName;
     private int price;
-    private Date createdDate;
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime created;
 
     public AdCopy() {
     }
@@ -64,12 +62,12 @@ public class AdCopy {
         this.price = price;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setCreated(LocalDateTime createdDate) {
+        this.created = createdDate;
     }
 
     @Override
@@ -79,7 +77,7 @@ public class AdCopy {
                 ", description='" + description + '\'' +
                 ", categoryName='" + categoryName + '\'' +
                 ", price=" + price +
-                ", createdDate=" + createdDate +
+                ", createdDate=" + created +
                 '}';
     }
 }
