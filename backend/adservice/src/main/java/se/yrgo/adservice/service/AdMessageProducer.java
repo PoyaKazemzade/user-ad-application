@@ -16,7 +16,7 @@ public class AdMessageProducer {
     }
 
     public void sendAdToQueue(Ad ad) {
-        jmsTemplate.convertAndSend("ads.queue", ad);
+        jmsTemplate.convertAndSend("adQueue", ad);
     }
 }
 
