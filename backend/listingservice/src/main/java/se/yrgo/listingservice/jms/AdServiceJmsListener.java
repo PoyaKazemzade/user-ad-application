@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 import se.yrgo.listingservice.data.AdCopyRepository;
 import se.yrgo.listingservice.domain.AdCopy;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -21,15 +25,29 @@ public class AdServiceJmsListener {
 
         message.forEach((key, value) -> System.out.println(key + ": " + value));
 
- /*       AdCopy newAdCopy = new AdCopy();
+        AdCopy newAdCopy = new AdCopy();
 
-        // need to parse the received message here, dummy code atm
-        newAdCopy.setTitle(message);
-        newAdCopy.setDescription(message);
-        newAdCopy.setCategoryName(message);
-        newAdCopy.setPrice(0);
-        newAdCopy.setCreatedDate(new Date());
+        // parse the received message here, create set values to AdCopy instance
+        newAdCopy.setTitle(message.get("title"));
+        newAdCopy.setDescription(message.get("description"));
+        newAdCopy.setCategoryName(message.get("categoryName"));
+        newAdCopy.setPrice(Integer.parseInt(message.get("price")));
 
-        adCopyData.save(newAdCopy);*/
+        // parse date from String
+        String dateString = message.get("createdDate");
+        if (dateString != null && !dateString.isEmpty()) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME; // ISO format used in toString()
+                LocalDateTime parsedDate = LocalDateTime.parse(dateString, formatter);
+                newAdCopy.setCreated(parsedDate); // Set the parsed date
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                newAdCopy.setCreated(LocalDateTime.now()); // Fallback to current date if parsing fails
+            }
+        } else {
+            newAdCopy.setCreated(LocalDateTime.now()); // Set to current date if createDate is missing
+        }
+
+        adCopyData.save(newAdCopy);
     }
 }
