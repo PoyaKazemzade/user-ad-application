@@ -10,7 +10,6 @@ public class AdCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "category_name", nullable = false)
     private String categoryName;
 
     public AdCategory() {

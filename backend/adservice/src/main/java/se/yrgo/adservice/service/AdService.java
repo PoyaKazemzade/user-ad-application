@@ -14,10 +14,13 @@ public class AdService {
     private final AdRepository adRepository;
     private final AdCategoryRepository adCategoryRepository;
 
+    private final AdMessageProducer adMessageProducer;
+
     @Autowired
-    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository) {
+    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer) {
         this.adRepository = adRepository;
         this.adCategoryRepository = adCategoryRepository;
+        this.adMessageProducer = adMessageProducer;
     }
 
     public List<Ad> getAllAds() {
@@ -29,7 +32,9 @@ public class AdService {
     }
 
     public Ad createAd(Ad ad) {
-        return adRepository.save(ad);
+        Ad newAd = adRepository.save(ad);
+        adMessageProducer.sendAdToQueue(newAd);
+        return newAd;
     }
 
     public void deleteAd(Integer id) {

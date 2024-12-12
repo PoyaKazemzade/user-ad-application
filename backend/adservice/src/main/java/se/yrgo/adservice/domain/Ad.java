@@ -2,35 +2,32 @@ package se.yrgo.adservice.domain;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 @Table(name = "Ad")
-public class Ad {
+public class Ad implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_name", nullable = false)
+
     private String userName;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private AdCategory category;
 
-    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "create_date", nullable = false)
     private Date createDate;
 
-    @Column(name = "price", nullable = false)
     private Integer price;
 
     public Ad() {
