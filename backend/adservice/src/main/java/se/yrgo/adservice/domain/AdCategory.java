@@ -17,8 +17,7 @@ public class AdCategory {
     public AdCategory() {
     }
 
-    public AdCategory(Integer id, String categoryName) {
-        this.id = id;
+    public AdCategory(String categoryName) {
         this.categoryName = categoryName;
     }
 

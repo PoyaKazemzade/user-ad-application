@@ -1,10 +1,12 @@
 package se.yrgo.adservice.service;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.adservice.data.AdCategoryRepository;
 import se.yrgo.adservice.domain.AdCategory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +17,19 @@ public class AdCategoryService {
     @Autowired
     public AdCategoryService(AdCategoryRepository adCategoryRepository) {
         this.adCategoryRepository = adCategoryRepository;
+    }
+
+    @PostConstruct
+    public void createCategories() {
+        final List<AdCategory> categories = new ArrayList<>(List.of(
+                new AdCategory("computers and gaming"),
+                new AdCategory("phones"),
+                new AdCategory("vehicles"),
+                new AdCategory("clothing"),
+                new AdCategory("animals"),
+                new AdCategory("furniture")
+        ));
+        adCategoryRepository.saveAll(categories);
     }
 
     public List<AdCategory> getAllCategories() {

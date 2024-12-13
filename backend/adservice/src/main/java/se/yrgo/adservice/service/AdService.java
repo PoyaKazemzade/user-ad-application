@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import se.yrgo.adservice.data.AdCategoryRepository;
 import se.yrgo.adservice.data.AdRepository;
 import se.yrgo.adservice.domain.Ad;
+import se.yrgo.adservice.domain.AdCategory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AdService {
-
     private final AdRepository adRepository;
     private final AdCategoryRepository adCategoryRepository;
-
     private final AdMessageProducer adMessageProducer;
 
     @Autowired
