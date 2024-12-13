@@ -4,18 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.adservice.domain.AdCategory;
 import se.yrgo.adservice.service.AdCategoryService;
+import se.yrgo.adservice.service.CategoryMessageProducer;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 public class AdCategoryRestController {
 
     private final AdCategoryService adCategoryService;
+    private final CategoryMessageProducer categoryMessageProducer;
 
     @Autowired
-    public AdCategoryRestController(AdCategoryService adCategoryService) {
+    public AdCategoryRestController(AdCategoryService adCategoryService, CategoryMessageProducer categoryMessageProducer) {
         this.adCategoryService = adCategoryService;
+        this.categoryMessageProducer = categoryMessageProducer;
     }
 
     @GetMapping
@@ -30,7 +33,13 @@ public class AdCategoryRestController {
 
     @PostMapping
     public AdCategory createCategory(@RequestBody AdCategory adCategory) {
-        return adCategoryService.createCategory(adCategory);
+        try {
+            AdCategory savedCategory = adCategoryService.createCategory(adCategory);
+            categoryMessageProducer.sendCategoryToQueue(savedCategory);
+            return savedCategory;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send message to queue: " + e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{id}")
