@@ -9,7 +9,7 @@ import se.yrgo.adservice.service.AdService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ads")
+@RequestMapping("/api/v1/ads")
 public class AdRestController {
 
     private final AdService adService;

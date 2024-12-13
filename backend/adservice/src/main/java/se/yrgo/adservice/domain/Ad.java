@@ -1,6 +1,8 @@
 package se.yrgo.adservice.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,11 +17,17 @@ public class Ad implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false, length = 60)
+    @Size(min = 2, max = 60)
     private String userName;
+    @Column(nullable = false, length = 50)
     private String title;
+    @Column(nullable = false, length = 250)
     private String description;
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime created;
+    @Column(nullable = false)
+    @Min(1)
     private Integer price;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

@@ -5,12 +5,9 @@ import org.springframework.stereotype.Service;
 import se.yrgo.listingservice.data.AdCopyRepository;
 import se.yrgo.listingservice.domain.AdCopy;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AdServiceJmsListener {
@@ -21,7 +18,7 @@ public class AdServiceJmsListener {
     }
 
     @JmsListener(destination = "adQueue")
-    public void receiveMessage(HashMap<String, String> message) {
+    public void receiveMessage(Map<String, String> message) {
 
         message.forEach((key, value) -> System.out.println(key + ": " + value));
 
