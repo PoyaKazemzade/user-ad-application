@@ -14,7 +14,7 @@ import java.util.List;
  * TODO: Additional error handling can be added for cases like invalid parameters or empty results.
  */
 @RestController
-@RequestMapping("/ads")
+@RequestMapping("api/v1/ads")
 public class AdCopyController {
     private final AdCopyRepository data;
 

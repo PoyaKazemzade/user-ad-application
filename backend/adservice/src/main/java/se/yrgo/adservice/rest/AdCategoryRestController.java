@@ -9,7 +9,7 @@ import se.yrgo.adservice.service.CategoryMessageProducer;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/v1/categories")
 public class AdCategoryRestController {
 
     private final AdCategoryService adCategoryService;
