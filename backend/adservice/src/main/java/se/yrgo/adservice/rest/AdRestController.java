@@ -3,19 +3,22 @@ package se.yrgo.adservice.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.adservice.domain.Ad;
+import se.yrgo.adservice.service.AdMessageProducer;
 import se.yrgo.adservice.service.AdService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/ads")
+@RequestMapping("/api/ads")
 public class AdRestController {
 
     private final AdService adService;
+    private final AdMessageProducer adMessageProducer;
 
     @Autowired
-    public AdRestController(AdService adService) {
+    public AdRestController(AdService adService, AdMessageProducer adMessageProducer) {
         this.adService = adService;
+        this.adMessageProducer = adMessageProducer;
     }
 
     @GetMapping
@@ -30,7 +33,13 @@ public class AdRestController {
 
     @PostMapping
     public Ad createAd(@RequestBody Ad ad) {
-        return adService.createAd(ad);
+        try {
+            Ad newAd = adService.createAd(ad);
+            adMessageProducer.sendAdToQueue(newAd);
+            return newAd;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send message to queue: " + e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{id}")

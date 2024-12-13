@@ -1,6 +1,8 @@
 package se.yrgo.adservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import se.yrgo.adservice.domain.Ad;
@@ -12,16 +14,23 @@ public class AdMessageProducer {
 
     private final JmsTemplate jmsTemplate;
 
+    @Value("${queue.ad.name}")
+    private String adQueue;
+
     @Autowired
     public AdMessageProducer(JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }
 
     public void sendAdToQueue(Ad ad) {
-        var newAdMessage = getMappedMessageData(ad);
-
-        jmsTemplate.setDeliveryPersistent(true);
-        jmsTemplate.convertAndSend("adQueue", newAdMessage);
+        try {
+            var newAdMessage = getMappedMessageData(ad);
+            jmsTemplate.setDeliveryPersistent(true);
+            jmsTemplate.convertAndSend(adQueue, newAdMessage);
+            System.out.println("Ad sent to queue: " + ad.getTitle());
+        } catch (JmsException e) {
+            System.err.println("Failed to send Ad to queue: " + e.getMessage());
+        }
     }
 
     private static HashMap<String, String> getMappedMessageData(Ad newAd) {
