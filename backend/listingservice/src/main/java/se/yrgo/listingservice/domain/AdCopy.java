@@ -1,6 +1,8 @@
 package se.yrgo.listingservice.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -12,11 +14,17 @@ public class AdCopy {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(nullable = false, length = 50)
     private String title;
+    @Column(nullable = false, length = 250)
     private String description;
+    @Column(nullable = false, length = 26)
+    @Size(min = 2, max = 26)
     private String categoryName;
+    @Column(nullable = false)
+    @Min(1)
     private int price;
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime created;
 
     public AdCopy() {
