@@ -22,7 +22,7 @@ public class Ad implements Serializable {
     @Column(nullable = false, length = 250)
     private String description;
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
-    private LocalDateTime created; // TIMESTAMP without timezone
+    private LocalDateTime created = LocalDateTime.now(); // default value
     @Column(nullable = false)
     @Min(1)
     private Integer price;

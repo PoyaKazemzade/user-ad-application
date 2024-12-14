@@ -7,12 +7,13 @@ import se.yrgo.listingservice.domain.AdCopy;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 
 @Service
 public class AdServiceJmsListener {
     private final AdCopyRepository adCopyData;
-    private static final String DEFAULT_DATE = "0000-01-01T00:00:00";
+    private static final String DEFAULT_DATE = "1970-01-01T00:00:00";
 
     public AdServiceJmsListener(AdCopyRepository adCopyData) {
         this.adCopyData = adCopyData;
@@ -36,7 +37,7 @@ public class AdServiceJmsListener {
             try {
                 LocalDateTime parsedDate = LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
                 newAdCopy.setCreated(parsedDate);
-            } catch (Exception ex) {
+            } catch (DateTimeParseException ex) {
                 ex.printStackTrace();
                 newAdCopy.setCreated(LocalDateTime.parse(DEFAULT_DATE, DateTimeFormatter.ISO_DATE_TIME));
             }
