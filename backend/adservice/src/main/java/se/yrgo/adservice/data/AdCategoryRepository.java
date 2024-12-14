@@ -6,4 +6,5 @@ import se.yrgo.adservice.domain.AdCategory;
 
 @Repository
 public interface AdCategoryRepository extends JpaRepository<AdCategory, Integer> {
+    boolean existsByCategoryName(String categoryName);
 }
