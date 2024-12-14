@@ -40,7 +40,7 @@ public class AdMessageProducer {
         newAdMessage.put("categoryName", newAd.getCategory().getCategoryName());
         newAdMessage.put("title", newAd.getTitle());
         newAdMessage.put("description", newAd.getDescription());
-        newAdMessage.put("createDate", newAd.getCreated().toString());
+        newAdMessage.put("created", newAd.getCreated().toString());
         newAdMessage.put("price", newAd.getPrice().toString());
         return newAdMessage;
     }

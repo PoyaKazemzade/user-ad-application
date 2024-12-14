@@ -12,6 +12,7 @@ import java.util.Map;
 @Service
 public class AdServiceJmsListener {
     private final AdCopyRepository adCopyData;
+    private static final String DEFAULT_DATE = "0000-01-01T00:00:00";
 
     public AdServiceJmsListener(AdCopyRepository adCopyData) {
         this.adCopyData = adCopyData;
@@ -19,7 +20,6 @@ public class AdServiceJmsListener {
 
     @JmsListener(destination = "adQueue")
     public void receiveMessage(Map<String, String> message) {
-
         message.forEach((key, value) -> System.out.println(key + ": " + value));
 
         AdCopy newAdCopy = new AdCopy();
@@ -31,18 +31,17 @@ public class AdServiceJmsListener {
         newAdCopy.setPrice(Integer.parseInt(message.get("price")));
 
         // parse date from String
-        String dateString = message.get("createdDate");
+        String dateString = message.get("created");
         if (dateString != null && !dateString.isEmpty()) {
             try {
-                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME; // ISO format used in toString()
-                LocalDateTime parsedDate = LocalDateTime.parse(dateString, formatter);
-                newAdCopy.setCreated(parsedDate); // Set the parsed date
+                LocalDateTime parsedDate = LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
+                newAdCopy.setCreated(parsedDate);
             } catch (Exception ex) {
                 ex.printStackTrace();
-                newAdCopy.setCreated(LocalDateTime.now()); // Fallback to current date if parsing fails
+                newAdCopy.setCreated(LocalDateTime.parse(DEFAULT_DATE, DateTimeFormatter.ISO_DATE_TIME));
             }
         } else {
-            newAdCopy.setCreated(LocalDateTime.now()); // Set to current date if createDate is missing
+            newAdCopy.setCreated(LocalDateTime.parse(DEFAULT_DATE, DateTimeFormatter.ISO_DATE_TIME));
         }
 
         adCopyData.save(newAdCopy);
