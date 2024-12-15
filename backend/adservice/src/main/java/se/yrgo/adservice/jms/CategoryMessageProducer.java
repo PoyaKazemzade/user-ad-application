@@ -1,4 +1,4 @@
-package se.yrgo.adservice.service;
+package se.yrgo.adservice.jms;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

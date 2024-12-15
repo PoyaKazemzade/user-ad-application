@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.adservice.domain.AdCategory;
 import se.yrgo.adservice.service.AdCategoryService;
-import se.yrgo.adservice.service.CategoryMessageProducer;
+import se.yrgo.adservice.jms.CategoryMessageProducer;
 
 import java.util.List;
 
