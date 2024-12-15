@@ -1,5 +1,6 @@
 package se.yrgo.listingservice.rest;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +12,6 @@ import java.util.List;
 
 /**
  * Returns JSON responses when the controller returns objects
- * TODO: Additional error handling can be added for cases like invalid parameters or empty results.
  */
 @RestController
 @RequestMapping("api/v1/ads")
@@ -28,8 +28,12 @@ public class AdCopyController {
      * @return a list of all ads
      */
     @GetMapping
-    public List<AdCopy> getAllAds() {
-        return data.findAll();
+    public ResponseEntity<List<AdCopy>> getAllAds() {
+        var res = data.findAll();
+        if (res.isEmpty()) {
+            throw new ResourceNotFoundException("No ads available.");
+        }
+        return ResponseEntity.ok(res);
     }
 
     /**
@@ -39,8 +43,15 @@ public class AdCopyController {
      * @return a list of ads in the category
      */
     @GetMapping(params = {"filter"})
-    public List<AdCopy> getAdsForCategory(@RequestParam("filter") String categoryName) {
-        return data.findByCategoryName(categoryName).stream().toList();
+    public ResponseEntity<List<AdCopy>> getAdsForCategory(@RequestParam("filter") String categoryName) {
+        if (categoryName == null || categoryName.isBlank()) {
+            throw new IllegalArgumentException("Invalid category name.");
+        }
+        var res = data.findByCategoryName(categoryName);
+        if (res.isEmpty()) {
+            throw new ResourceNotFoundException("No ads found for category: " + categoryName);
+        }
+        return ResponseEntity.ok(res);
     }
 
     /**
@@ -50,10 +61,16 @@ public class AdCopyController {
      * @return result
      */
     @GetMapping("/search")
-    public List<AdCopy> searchAds(@RequestParam("q") String query) {
-        return data.findAll().stream()
+    public ResponseEntity<List<AdCopy>> searchAds(@RequestParam(value = "q", required = false) String query) {
+        if (query == null || query.isBlank()) {
+            throw new IllegalArgumentException("Search query was empty.");
+        }
+        var res = data.findAll().stream()
                 .filter(ad -> ad.getTitle().toLowerCase().contains(query.toLowerCase()))
                 .toList();
+        if (res.isEmpty()) {
+            throw new ResourceNotFoundException("No matching result found from search for: " + query);
+        }
+        return ResponseEntity.ok(res);
     }
-
 }

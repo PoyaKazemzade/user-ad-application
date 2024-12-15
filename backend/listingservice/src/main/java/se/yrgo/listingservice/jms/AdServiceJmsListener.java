@@ -25,13 +25,13 @@ public class AdServiceJmsListener {
 
         AdCopy newAdCopy = new AdCopy();
 
-        // parse the received message here, create set values to AdCopy instance
+        // parse the received message here
         newAdCopy.setTitle(message.get("title"));
         newAdCopy.setDescription(message.get("description"));
         newAdCopy.setCategoryName(message.get("categoryName"));
         newAdCopy.setPrice(Integer.parseInt(message.get("price")));
 
-        // parse date from String
+        // parse LocalDateTime from String
         String dateString = message.get("created");
         if (dateString != null && !dateString.isEmpty()) {
             try {
