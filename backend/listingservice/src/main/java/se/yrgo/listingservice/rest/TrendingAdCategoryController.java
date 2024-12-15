@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.yrgo.listingservice.data.TrendingAdRepository;
 import se.yrgo.listingservice.domain.TrendingAdCategory;
+import se.yrgo.listingservice.service.TrendingAdCategoryService;
 
 import java.util.List;
 
@@ -20,10 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/trending-categories")
 public class TrendingAdCategoryController {
-    private final TrendingAdRepository data;
+    private final TrendingAdCategoryService trendingAdCategoryService;
 
-    public TrendingAdCategoryController(TrendingAdRepository data) {
-        this.data = data;
+    public TrendingAdCategoryController(TrendingAdCategoryService trendingAdCategoryService) {
+        this.trendingAdCategoryService = trendingAdCategoryService;
     }
 
     /**
@@ -58,7 +59,7 @@ public class TrendingAdCategoryController {
             )
     })
     public ResponseEntity<List<TrendingAdCategory>> getTrendingCategories() {
-        var res = data.findByOrderByAdCountDesc();
+        var res = trendingAdCategoryService.getTrendingCategories();
         if (res.isEmpty()) {
             throw new ResourceNotFoundException("No top categories available.");
         }

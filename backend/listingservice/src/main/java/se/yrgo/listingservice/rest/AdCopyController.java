@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import se.yrgo.listingservice.data.AdCopyRepository;
 import se.yrgo.listingservice.domain.AdCopy;
 import se.yrgo.listingservice.domain.TrendingAdCategory;
+import se.yrgo.listingservice.service.AdCopyService;
 
 import java.util.List;
 
@@ -23,10 +24,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/ads")
 public class AdCopyController {
-    private final AdCopyRepository data;
+    private final AdCopyService adCopyService;
 
-    public AdCopyController(AdCopyRepository data) {
-        this.data = data;
+    public AdCopyController(AdCopyService adCopyService) {
+        this.adCopyService = adCopyService;
     }
 
     /**
@@ -60,7 +61,7 @@ public class AdCopyController {
             )
     })
     public ResponseEntity<List<AdCopy>> getAllAds() {
-        var res = data.findAll();
+        var res = adCopyService.getAllAds();
         if (res.isEmpty()) {
             throw new ResourceNotFoundException("No ads available.");
         }
@@ -104,7 +105,7 @@ public class AdCopyController {
         if (categoryName == null || categoryName.isBlank()) {
             throw new IllegalArgumentException("Invalid category name.");
         }
-        var res = data.findByCategoryName(categoryName);
+        var res = adCopyService.getAdsByCategory(categoryName);
         if (res.isEmpty()) {
             throw new ResourceNotFoundException("No ads found for category: " + categoryName);
         }
@@ -153,9 +154,7 @@ public class AdCopyController {
         if (query == null || query.isBlank()) {
             throw new IllegalArgumentException("Search query was empty.");
         }
-        var res = data.findAll().stream()
-                .filter(ad -> ad.getTitle().toLowerCase().contains(query.toLowerCase()))
-                .toList();
+        var res = adCopyService.searchAds(query);
         if (res.isEmpty()) {
             throw new ResourceNotFoundException("No matching result found from search for: " + query);
         }
