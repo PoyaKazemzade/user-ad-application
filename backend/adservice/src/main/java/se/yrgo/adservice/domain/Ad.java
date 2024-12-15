@@ -5,10 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "Ad")
@@ -25,7 +22,7 @@ public class Ad implements Serializable {
     @Column(nullable = false, length = 250)
     private String description;
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
-    private LocalDateTime created;
+    private LocalDateTime created = LocalDateTime.now(); // default value
     @Column(nullable = false)
     @Min(1)
     private Integer price;

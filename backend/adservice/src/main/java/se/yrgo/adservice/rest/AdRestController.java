@@ -34,9 +34,7 @@ public class AdRestController {
     @PostMapping
     public Ad createAd(@RequestBody Ad ad) {
         try {
-            Ad newAd = adService.createAd(ad);
-            adMessageProducer.sendAdToQueue(newAd);
-            return newAd;
+            return adService.createAd(ad);
         } catch (Exception e) {
             throw new RuntimeException("Failed to send message to queue: " + e.getMessage(), e);
         }

@@ -25,7 +25,7 @@ public class AdCopy {
     @Min(1)
     private int price;
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
-    private LocalDateTime created;
+    private LocalDateTime created = LocalDateTime.now();
 
     public AdCopy() {
     }

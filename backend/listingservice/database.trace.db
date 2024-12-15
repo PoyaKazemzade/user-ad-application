@@ -1196,3 +1196,9 @@ Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name
 2024-12-13 12:07:23.729370+01:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM AD_COPY"; expected "identifier"; SQL statement:
 DELETE * FROM AD_COPY [42001-232]
+2024-12-15 00:07:50.630283+01:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM AD_COPY"; expected "identifier"; SQL statement:
+DELETE * FROM AD_COPY [42001-232]
+2024-12-15 00:08:13.372215+01:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM AD_COPY"; expected "identifier"; SQL statement:
+DELETE * FROM AD_COPY [42001-232]
