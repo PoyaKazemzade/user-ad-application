@@ -20,20 +20,11 @@ public class AdRestController {
         this.adService = adService;
     }
 
-//    @GetMapping
-//    public List<AdResponseDto> getAllAds() {
-//        return adService.getAllAds();
-//    }
-
-//
-//    @PostMapping
-//    public AdResponseDto createAd(@RequestBody Ad ad) {
-//        return adService.createAd(ad); // Ensure createAd also maps to AdResponseDto
-//    }
     @GetMapping
-    public List<Ad> getAllAds() {
+    public List<AdResponseDto> getAllAds() {
         return adService.getAllAds();
     }
+
 
     @GetMapping("/{id}")
     public AdResponseDto getAdById(@PathVariable Integer id) {
@@ -58,7 +49,8 @@ public class AdRestController {
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<Ad> getAdsByCategory(@PathVariable Integer categoryId) {
+    public List<AdResponseDto> getAdsByCategory(@PathVariable Integer categoryId) {
         return adService.getAdsByCategory(categoryId);
     }
+
 }

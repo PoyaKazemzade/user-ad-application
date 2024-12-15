@@ -12,6 +12,7 @@ import se.yrgo.adservice.dto.AdResponseDto;
 import se.yrgo.adservice.jms.AdMessageProducer;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdService {
@@ -26,9 +27,14 @@ public class AdService {
         this.adMessageProducer = adMessageProducer;
     }
 
-    public List<Ad> getAllAds() {
-        return adRepository.findAll();
+    public List<AdResponseDto> getAllAds() {
+        List<Ad> allAdsInRepository = adRepository.findAll();
+
+        return allAdsInRepository.stream()
+                .map(AdResponseDto::new)
+                .collect(Collectors.toList());
     }
+
 
     public AdResponseDto getAdById(Integer id) {
         Ad ad = adRepository.findById(id)
@@ -61,8 +67,11 @@ public class AdService {
         adRepository.deleteById(id);
     }
 
-    public List<Ad> getAdsByCategory(Integer categoryId) {
-        return adRepository.findByCategory_Id(categoryId);
+    public List<AdResponseDto> getAdsByCategory(Integer categoryId) {
+        List<Ad> ads = adRepository.findByCategory_Id(categoryId);
+        return ads.stream()
+                .map(AdResponseDto::new) // Map each Ad to AdResponseDto
+                .collect(Collectors.toList());
     }
 
     public Ad updateAd(Integer id, AdDto adDto) {
