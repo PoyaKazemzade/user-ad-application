@@ -1,4 +1,8 @@
 import axios from 'axios';
+import {Ad} from '../models/Ad';
+import {AdCategory} from '../models/AdCategory';
+import {AdCopy} from '../models/AdCopy';
+import {TrendingAdCategory} from '../models/TrendingAdCategory';
 
 // Ad service
 // Ad
@@ -10,7 +14,7 @@ const adServiceApi = axios.create({
     },
 });
 
-export const getAllAds = async () => {
+export const getAllAds = async (): Promise<Ad[]> => {
     try {
         const response = await adServiceApi.get('/');
         return response.data;
@@ -20,7 +24,7 @@ export const getAllAds = async () => {
     }
 };
 
-export const getAdById = async (id: number) => {
+export const getAdById = async (id: number): Promise<Ad> => {
     try {
         const response = await adServiceApi.get(`/${id}`);
         return response.data;
@@ -30,7 +34,7 @@ export const getAdById = async (id: number) => {
     }
 };
 
-export const createAd = async (ad: any) => {
+export const createAd = async (ad: Ad): Promise<Ad> => {
     try {
         const response = await adServiceApi.post('/', ad);
         return response.data;
@@ -40,7 +44,7 @@ export const createAd = async (ad: any) => {
     }
 };
 
-export const deleteAd = async (id: number) => {
+export const deleteAd = async (id: number): Promise<void> => {
     try {
         await adServiceApi.delete(`/${id}`);
         console.log(`Ad with ID ${id} deleted`);
@@ -54,23 +58,23 @@ export const deleteAd = async (id: number) => {
 // Category
 const adCategoryServiceApi = axios.create({
     baseURL: 'http://localhost:8189/api/v1/categories', // Ad Category Service base URL
-    timeout: 5000, // Timeout after 5 seconds
+    timeout: 5000,
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (): Promise<AdCategory[]> => {
     try {
         const response = await adCategoryServiceApi.get('/');
-        return response.data; // Returns the list of ad categories
+        return response.data;
     } catch (error) {
         console.error('Error fetching all categories', error);
         throw error;
     }
 };
 
-export const getCategoryById = async (id: number) => {
+export const getCategoryById = async (id: number): Promise<AdCategory> => {
     try {
         const response = await adCategoryServiceApi.get(`/${id}`);
         return response.data; // Returns the single category
@@ -82,21 +86,40 @@ export const getCategoryById = async (id: number) => {
 
 // Listing Service
 // Ad Copy
-const adCopy = axios.create({
-    baseURL: 'http://localhost:8080', // URL for Listing Service
-    timeout: 5000, // Timeout after 5 seconds
+const adCopyServiceApi = axios.create({
+    baseURL: 'http://localhost:8080/api/v1/ads', // Base URL
+    timeout: 5000,
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
-// Function to make requests to Listing Service
-export const getListingServiceData = async () => {
+export const getListOfAds = async (): Promise<AdCopy[]> => {
     try {
-        const response = await adCopy.get('/listings'); // Adjust the endpoint as needed
+        const response = await adCopyServiceApi.get('/');
         return response.data;
     } catch (error) {
-        console.error('Error fetching Listing Service data', error);
+        console.error('Error fetching Ad copy data from Listing Service', error);
+        throw error;
+    }
+};
+
+// Ad Copy
+const trendingAdCategoryServiceApi = axios.create({
+    baseURL: 'http://localhost:8080/api/v1/trending-categories', // Base URL
+    timeout: 5000,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+// Get trending ad categories
+export const getTrendingAdCategories = async (): Promise<TrendingAdCategory[]> => {
+    try {
+        const response = await trendingAdCategoryServiceApi.get('/');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching Trending Ad Categories', error);
         throw error;
     }
 };
