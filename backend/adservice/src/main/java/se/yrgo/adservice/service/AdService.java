@@ -10,6 +10,7 @@ import se.yrgo.adservice.domain.AdCategory;
 import se.yrgo.adservice.dto.AdDto;
 import se.yrgo.adservice.dto.AdResponseDto;
 import se.yrgo.adservice.jms.AdMessageProducer;
+import se.yrgo.adservice.jms.DeleteAdMessageProducer;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,29 +20,21 @@ public class AdService {
     private final AdRepository adRepository;
     private final AdCategoryRepository adCategoryRepository;
     private final AdMessageProducer adMessageProducer;
+    private final DeleteAdMessageProducer deleteAdMessageProducer;
 
     @Autowired
-    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer) {
+    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer, DeleteAdMessageProducer deleteAdMessageProducer) {
         this.adRepository = adRepository;
         this.adCategoryRepository = adCategoryRepository;
         this.adMessageProducer = adMessageProducer;
+        this.deleteAdMessageProducer = deleteAdMessageProducer;
     }
-
-    public List<AdResponseDto> getAllAds() {
-        List<Ad> allAdsInRepository = adRepository.findAll();
-
-        return allAdsInRepository.stream()
-                .map(AdResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
 
     public AdResponseDto getAdById(Integer id) {
         Ad ad = adRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ad not found"));
         return new AdResponseDto(ad);
     }
-
 
     public Ad createAd(AdDto adDto) {
         AdCategory category = adCategoryRepository.findById(adDto.getCategoryId())
@@ -65,13 +58,11 @@ public class AdService {
 
     public void deleteAd(Integer id) {
         adRepository.deleteById(id);
-    }
-
-    public List<AdResponseDto> getAdsByCategory(Integer categoryId) {
-        List<Ad> ads = adRepository.findByCategory_Id(categoryId);
-        return ads.stream()
-                .map(AdResponseDto::new) // Map each Ad to AdResponseDto
-                .collect(Collectors.toList());
+        try {
+            deleteAdMessageProducer.sendDeleteAdMessageToQueue(id);
+        } catch (Exception e) {
+            System.err.println("Failed to send delete message to the queue: " + e.getMessage());
+        }
     }
 
     public Ad updateAd(Integer id, AdDto adDto) {
@@ -89,5 +80,21 @@ public class AdService {
 
         return adRepository.save(existingAd);
     }
+
+    //to be deleted
+//    public List<AdResponseDto> getAllAds() {
+//        List<Ad> allAdsInRepository = adRepository.findAll();
+//
+//        return allAdsInRepository.stream()
+//                .map(AdResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
+    //to be deleted
+//    public List<AdResponseDto> getAdsByCategory(Integer categoryId) {
+//        List<Ad> ads = adRepository.findByCategory_Id(categoryId);
+//        return ads.stream()
+//                .map(AdResponseDto::new) // Map each Ad to AdResponseDto
+//                .collect(Collectors.toList());
+//    }
 
 }
