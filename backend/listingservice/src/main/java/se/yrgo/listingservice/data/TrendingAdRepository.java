@@ -5,8 +5,10 @@ import org.springframework.stereotype.Repository;
 import se.yrgo.listingservice.domain.TrendingAdCategory;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TrendingAdRepository extends JpaRepository<TrendingAdCategory, Integer> {
     List<TrendingAdCategory> findByOrderByAdCountDesc();
+    Optional<TrendingAdCategory> findByCategoryName(String categoryName);
 }

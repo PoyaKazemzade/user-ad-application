@@ -57,13 +57,11 @@ public class AdEventJmsListener {
 
     private void updateTrendingAdCategoriesData(AdCopy newAdCopy) {
         // Handle the trending ad categories
-        trendingAdData.findById(newAdCopy.getCategoryId())
-                .ifPresentOrElse(existingCategory -> {
-                    // Increment the ad count if the category already exists
-                    existingCategory.setAdCount(existingCategory.getAdCount() + 1);
-                    trendingAdData.save(existingCategory);
+        trendingAdData.findByCategoryName(newAdCopy.getCategoryName())
+                .ifPresentOrElse(category -> {
+                    category.setAdCount(category.getAdCount() + 1);
+                    trendingAdData.save(category);
                 }, () -> {
-                    // Add a new category with adCount initialized to 1 if it doesn't exist
                     TrendingAdCategory newTrendingCategory = new TrendingAdCategory();
                     newTrendingCategory.setId(newAdCopy.getCategoryId());
                     newTrendingCategory.setCategoryName(newAdCopy.getCategoryName());
