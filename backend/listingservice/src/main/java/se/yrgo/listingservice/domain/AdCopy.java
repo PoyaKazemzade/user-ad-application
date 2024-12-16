@@ -18,6 +18,8 @@ public class AdCopy {
     private String title;
     @Column(nullable = false, length = 250)
     private String description;
+    @Column(nullable = false)
+    private int categoryId;
     @Column(nullable = false, length = 26)
     @Size(min = 2, max = 26)
     private String categoryName;
@@ -60,6 +62,14 @@ public class AdCopy {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public int getPrice() {

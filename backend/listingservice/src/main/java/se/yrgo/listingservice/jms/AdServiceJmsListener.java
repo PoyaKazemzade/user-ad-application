@@ -29,6 +29,7 @@ public class AdServiceJmsListener {
         newAdCopy.setTitle(message.get("title"));
         newAdCopy.setDescription(message.get("description"));
         newAdCopy.setCategoryName(message.get("categoryName"));
+        newAdCopy.setCategoryId(Integer.parseInt(message.get("categoryId")));
         newAdCopy.setPrice(Integer.parseInt(message.get("price")));
 
         // parse LocalDateTime from String
