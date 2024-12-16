@@ -22,6 +22,9 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        if(user.getAddress() !=null) {
+            return userRepository.save(user);
+        }
         return userRepository.save(user);
     }
 

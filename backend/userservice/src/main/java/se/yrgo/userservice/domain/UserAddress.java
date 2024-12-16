@@ -1,30 +1,31 @@
 package se.yrgo.userservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "USER_ADDRESS")
 public class UserAddress {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String street;
-
     private String city;
-
     private String zipCode;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
+    @JsonBackReference
     private User user;
 
-    // Getters and Setters
 
-    public int getId() {
+    // Getters och Setters
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
