@@ -10,6 +10,7 @@ import se.yrgo.userservice.domain.User;
 import se.yrgo.userservice.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,6 +34,15 @@ public class UserController {
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<?> findUserByName(@PathVariable String name) {
+        Optional<User> user = userService.findUserByName(name);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable @Positive int id) {

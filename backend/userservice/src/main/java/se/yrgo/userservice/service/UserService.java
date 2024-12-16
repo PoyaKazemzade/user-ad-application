@@ -7,6 +7,7 @@ import se.yrgo.userservice.data.UserRepository;
 import se.yrgo.userservice.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -30,6 +31,10 @@ public class UserService {
 
     public User getUserById(int id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public Optional<User> findUserByName(String name) {
+        return userRepository.findByName(name);
     }
 
     public void deleteUser(int id) {
