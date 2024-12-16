@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.yrgo.listingservice.data.TrendingAdRepository;
 import se.yrgo.listingservice.domain.TrendingAdCategory;
 import se.yrgo.listingservice.service.TrendingAdCategoryService;
 
@@ -33,7 +32,7 @@ public class TrendingAdCategoryController {
      *
      * @return result
      */
-    @GetMapping
+    @GetMapping("/")
     @Operation(
             summary = "Get top categories",
             description = "Returns a list of all categories with available ads, sorted in DESC order with most ads populated in them."

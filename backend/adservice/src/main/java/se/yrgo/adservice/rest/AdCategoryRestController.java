@@ -21,7 +21,7 @@ public class AdCategoryRestController {
         this.categoryMessageProducer = categoryMessageProducer;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<AdCategory> getAllCategories() {
         return adCategoryService.getAllCategories();
     }
@@ -31,7 +31,7 @@ public class AdCategoryRestController {
         return adCategoryService.getCategoryById(id);
     }
 
-    @PostMapping
+    @PostMapping("/")
     public AdCategory createCategory(@RequestBody AdCategory adCategory) {
         try {
             AdCategory savedCategory = adCategoryService.createCategory(adCategory);

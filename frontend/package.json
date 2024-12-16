@@ -11,13 +11,17 @@
   "dependencies": {
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
+    "bootstrap-vue-next": "^0.26.15",
     "pinia": "^2.3.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
+    "@floating-ui/vue": "^1.1.5",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vueuse/core": "^12.0.0",
     "typescript": "~5.6.2",
     "vite": "^6.0.1",
+    "vue-router": "^4.5.0",
     "vue-tsc": "^2.1.10"
   }
 }

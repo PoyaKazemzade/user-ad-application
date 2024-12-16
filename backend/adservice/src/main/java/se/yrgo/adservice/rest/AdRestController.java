@@ -13,12 +13,10 @@ import java.util.List;
 public class AdRestController {
 
     private final AdService adService;
-    private final AdMessageProducer adMessageProducer;
 
     @Autowired
-    public AdRestController(AdService adService, AdMessageProducer adMessageProducer) {
+    public AdRestController(AdService adService) {
         this.adService = adService;
-        this.adMessageProducer = adMessageProducer;
     }
 
     @GetMapping
