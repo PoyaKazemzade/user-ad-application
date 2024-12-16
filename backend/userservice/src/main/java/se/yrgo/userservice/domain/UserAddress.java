@@ -19,8 +19,16 @@ public class UserAddress {
     @JsonBackReference
     private User user;
 
+    public UserAddress() {
+    }
 
-    // Getters och Setters
+    public UserAddress( String street, String city, String zipCode, User user) {
+        this.street = street;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.user = user;
+    }
+
     public Integer getId() {
         return id;
     }
