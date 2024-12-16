@@ -1,19 +1,25 @@
 package se.yrgo.listingservice.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class TrendingAdCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(nullable = false, length = 26)
+    @Size(min = 2, max = 26)
     private String categoryName;
-    private long adCount;
+    @Column(nullable = false)
+    private long adCount = 0;
 
     public TrendingAdCategory() {
+    }
+
+    public TrendingAdCategory(int id, String categoryName) {
+        this.id = id;
+        this.categoryName = categoryName;
     }
 
     public int getId() {
