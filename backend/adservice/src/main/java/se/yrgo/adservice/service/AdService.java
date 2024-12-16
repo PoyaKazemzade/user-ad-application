@@ -1,47 +1,100 @@
 package se.yrgo.adservice.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.yrgo.adservice.data.AdCategoryRepository;
 import se.yrgo.adservice.data.AdRepository;
 import se.yrgo.adservice.domain.Ad;
 import se.yrgo.adservice.domain.AdCategory;
+import se.yrgo.adservice.dto.AdDto;
+import se.yrgo.adservice.dto.AdResponseDto;
+import se.yrgo.adservice.jms.AdMessageProducer;
+import se.yrgo.adservice.jms.DeleteAdMessageProducer;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdService {
     private final AdRepository adRepository;
     private final AdCategoryRepository adCategoryRepository;
     private final AdMessageProducer adMessageProducer;
+    private final DeleteAdMessageProducer deleteAdMessageProducer;
 
     @Autowired
-    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer) {
+    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer, DeleteAdMessageProducer deleteAdMessageProducer) {
         this.adRepository = adRepository;
         this.adCategoryRepository = adCategoryRepository;
         this.adMessageProducer = adMessageProducer;
+        this.deleteAdMessageProducer = deleteAdMessageProducer;
     }
 
-    public List<Ad> getAllAds() {
-        return adRepository.findAll();
+    public AdResponseDto getAdById(Integer id) {
+        Ad ad = adRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found"));
+        return new AdResponseDto(ad);
     }
 
-    public Ad getAdById(Integer id) {
-        return adRepository.findById(id).orElseThrow(() -> new RuntimeException("Ad not found"));
-    }
+    public Ad createAd(AdDto adDto) {
+        AdCategory category = adCategoryRepository.findById(adDto.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
-    public Ad createAd(Ad ad) {
-        Ad newAd = adRepository.save(ad);
-        adMessageProducer.sendAdToQueue(newAd);
-        return newAd;
+        Ad ad = new Ad();
+        ad.setUserName(adDto.getUserName());
+        ad.setTitle(adDto.getTitle());
+        ad.setDescription(adDto.getDescription());
+        ad.setPrice(adDto.getPrice());
+        ad.setCategory(category);
+
+        Ad savedAd = adRepository.save(ad);
+        try {
+            adMessageProducer.sendAdToQueue(savedAd);
+        } catch (Exception e) {
+            System.err.println("Failed to send Ad to the queue: " + e.getMessage());
+        }
+        return savedAd;
     }
 
     public void deleteAd(Integer id) {
         adRepository.deleteById(id);
+        try {
+            deleteAdMessageProducer.sendDeleteAdMessageToQueue(id);
+        } catch (Exception e) {
+            System.err.println("Failed to send delete message to the queue: " + e.getMessage());
+        }
     }
 
-    public List<Ad> getAdsByCategory(Integer categoryId) {
-        return adRepository.findByCategory_Id(categoryId);
+    public Ad updateAd(Integer id, AdDto adDto) {
+        Ad existingAd = adRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found"));
+
+        AdCategory category = adCategoryRepository.findById(adDto.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+        existingAd.setUserName(adDto.getUserName());
+        existingAd.setTitle(adDto.getTitle());
+        existingAd.setDescription(adDto.getDescription());
+        existingAd.setPrice(adDto.getPrice());
+        existingAd.setCategory(category);
+
+        return adRepository.save(existingAd);
     }
+
+    //to be deleted
+//    public List<AdResponseDto> getAllAds() {
+//        List<Ad> allAdsInRepository = adRepository.findAll();
+//
+//        return allAdsInRepository.stream()
+//                .map(AdResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
+    //to be deleted
+//    public List<AdResponseDto> getAdsByCategory(Integer categoryId) {
+//        List<Ad> ads = adRepository.findByCategory_Id(categoryId);
+//        return ads.stream()
+//                .map(AdResponseDto::new) // Map each Ad to AdResponseDto
+//                .collect(Collectors.toList());
+//    }
+
 }

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.adservice.domain.AdCategory;
 import se.yrgo.adservice.service.AdCategoryService;
-import se.yrgo.adservice.service.CategoryMessageProducer;
 
 import java.util.List;
 
@@ -13,12 +12,11 @@ import java.util.List;
 public class AdCategoryRestController {
 
     private final AdCategoryService adCategoryService;
-    private final CategoryMessageProducer categoryMessageProducer;
+
 
     @Autowired
-    public AdCategoryRestController(AdCategoryService adCategoryService, CategoryMessageProducer categoryMessageProducer) {
+    public AdCategoryRestController(AdCategoryService adCategoryService) {
         this.adCategoryService = adCategoryService;
-        this.categoryMessageProducer = categoryMessageProducer;
     }
 
     @GetMapping("/")
@@ -33,19 +31,14 @@ public class AdCategoryRestController {
 
     @PostMapping("/")
     public AdCategory createCategory(@RequestBody AdCategory adCategory) {
-        try {
-            AdCategory savedCategory = adCategoryService.createCategory(adCategory);
-            categoryMessageProducer.sendCategoryToQueue(savedCategory);
-            return savedCategory;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to send message to queue: " + e.getMessage(), e);
-        }
+        return adCategoryService.createCategory(adCategory);
+
     }
 
     @PutMapping("/{id}")
     public AdCategory updateCategory(@PathVariable Integer id, @RequestBody AdCategory adCategory) {
         adCategory.setId(id);
-        return adCategoryService.createCategory(adCategory); // Using createCategory here for both update and create simplicity
+        return adCategoryService.createCategory(adCategory);
     }
 
     @DeleteMapping("/{id}")
