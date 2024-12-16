@@ -13,18 +13,18 @@ import java.time.format.DateTimeParseException;
 import java.util.Map;
 
 @Service
-public class AdServiceJmsListener {
+public class AdEventJmsListener {
     private final AdCopyRepository adCopyData;
     private final TrendingAdRepository trendingAdData;
     private static final String DEFAULT_DATE = "1970-01-01T00:00:00";
 
-    public AdServiceJmsListener(AdCopyRepository adCopyData, TrendingAdRepository trendingAdData) {
+    public AdEventJmsListener(AdCopyRepository adCopyData, TrendingAdRepository trendingAdData) {
         this.adCopyData = adCopyData;
         this.trendingAdData = trendingAdData;
     }
 
     @JmsListener(destination = "adQueue")
-    public void receiveMessage(Map<String, String> message) {
+    public void receiveAdCreatedMessage(Map<String, String> message) {
         message.forEach((key, value) -> System.out.println(key + ": " + value));
 
         AdCopy newAdCopy = new AdCopy();
@@ -71,4 +71,12 @@ public class AdServiceJmsListener {
                     trendingAdData.save(newTrendingCategory);
                 });
     }
+
+    @JmsListener(destination = "deleteAdQueue")
+    public void receiveDeleteAdMessage(String message) {
+        var adId = Integer.parseInt(message);
+        var adToDelete = adCopyData.findById(adId);
+        adToDelete.ifPresent(adCopyData::delete);
+    }
+
 }
