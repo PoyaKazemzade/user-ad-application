@@ -20,24 +20,16 @@ public class AdRestController {
         this.adService = adService;
     }
 
-    @GetMapping
-    public List<AdResponseDto> getAllAds() {
-        return adService.getAllAds();
-    }
-
-
     @GetMapping("/{id}")
     public AdResponseDto getAdById(@PathVariable Integer id) {
         return adService.getAdById(id);
     }
 
-    // Create a new ad
     @PostMapping
     public Ad createAd(@RequestBody AdDto adDto) {
         return adService.createAd(adDto);
     }
 
-    // Update an existing ad
     @PutMapping("/{id}")
     public Ad updateAd(@PathVariable Integer id, @RequestBody AdDto adDto) {
         return adService.updateAd(id, adDto);
@@ -48,9 +40,15 @@ public class AdRestController {
         adService.deleteAd(id);
     }
 
-    @GetMapping("/category/{categoryId}")
-    public List<AdResponseDto> getAdsByCategory(@PathVariable Integer categoryId) {
-        return adService.getAdsByCategory(categoryId);
-    }
+//    to be deleted
+//    @GetMapping
+//    public List<AdResponseDto> getAllAds() {
+//        return adService.getAllAds();
+//    }
+//    to be deleted
+//    @GetMapping("/category/{categoryId}")
+//    public List<AdResponseDto> getAdsByCategory(@PathVariable Integer categoryId) {
+//        return adService.getAdsByCategory(categoryId);
+//    }
 
 }

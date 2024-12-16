@@ -27,21 +27,11 @@ public class AdService {
         this.adMessageProducer = adMessageProducer;
     }
 
-    public List<AdResponseDto> getAllAds() {
-        List<Ad> allAdsInRepository = adRepository.findAll();
-
-        return allAdsInRepository.stream()
-                .map(AdResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-
     public AdResponseDto getAdById(Integer id) {
         Ad ad = adRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ad not found"));
         return new AdResponseDto(ad);
     }
-
 
     public Ad createAd(AdDto adDto) {
         AdCategory category = adCategoryRepository.findById(adDto.getCategoryId())
@@ -67,13 +57,6 @@ public class AdService {
         adRepository.deleteById(id);
     }
 
-    public List<AdResponseDto> getAdsByCategory(Integer categoryId) {
-        List<Ad> ads = adRepository.findByCategory_Id(categoryId);
-        return ads.stream()
-                .map(AdResponseDto::new) // Map each Ad to AdResponseDto
-                .collect(Collectors.toList());
-    }
-
     public Ad updateAd(Integer id, AdDto adDto) {
         Ad existingAd = adRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ad not found"));
@@ -89,5 +72,22 @@ public class AdService {
 
         return adRepository.save(existingAd);
     }
+
+
+    //to be deleted
+//    public List<AdResponseDto> getAllAds() {
+//        List<Ad> allAdsInRepository = adRepository.findAll();
+//
+//        return allAdsInRepository.stream()
+//                .map(AdResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
+    //to be deleted
+//    public List<AdResponseDto> getAdsByCategory(Integer categoryId) {
+//        List<Ad> ads = adRepository.findByCategory_Id(categoryId);
+//        return ads.stream()
+//                .map(AdResponseDto::new) // Map each Ad to AdResponseDto
+//                .collect(Collectors.toList());
+//    }
 
 }
