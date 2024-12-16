@@ -2,7 +2,11 @@ package se.yrgo.adservice.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import se.yrgo.adservice.data.AdCategoryRepository;
 import se.yrgo.adservice.data.AdRepository;
 import se.yrgo.adservice.domain.Ad;
@@ -17,17 +21,19 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdService {
+    private final RestTemplate restTemplate;
     private final AdRepository adRepository;
     private final AdCategoryRepository adCategoryRepository;
     private final AdMessageProducer adMessageProducer;
     private final DeleteAdMessageProducer deleteAdMessageProducer;
 
     @Autowired
-    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer, DeleteAdMessageProducer deleteAdMessageProducer) {
+    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer, DeleteAdMessageProducer deleteAdMessageProducer, RestTemplate restTemplate) {
         this.adRepository = adRepository;
         this.adCategoryRepository = adCategoryRepository;
         this.adMessageProducer = adMessageProducer;
         this.deleteAdMessageProducer = deleteAdMessageProducer;
+        this.restTemplate = restTemplate;
     }
 
     public AdResponseDto getAdById(Integer id) {
@@ -37,6 +43,11 @@ public class AdService {
     }
 
     public Ad createAd(AdDto adDto) {
+        boolean userExists = checkIfUserExists(adDto.getUserName());
+        if (!userExists) {
+            throw new IllegalArgumentException("User does not exist in the external system");
+        }
+
         AdCategory category = adCategoryRepository.findById(adDto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
@@ -79,6 +90,27 @@ public class AdService {
         existingAd.setCategory(category);
 
         return adRepository.save(existingAd);
+    }
+
+    private boolean checkIfUserExists(String userName) {
+        String url = "http://localhost:8085/api/v1/users/name/" + userName;
+        try {
+            // Perform a GET request to the external service
+            ResponseEntity<Void> response = restTemplate.getForEntity(url, Void.class);
+
+            // Return true if the response status is 200 OK
+            return response.getStatusCode() == HttpStatus.OK;
+        } catch (HttpClientErrorException e) {
+            // Check if the error is 404 Not Found
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                return false;
+            }
+            // For other errors, rethrow or handle as needed
+            throw new RuntimeException("Error while checking user existence: " + e.getMessage(), e);
+        } catch (Exception e) {
+            // Handle unexpected exceptions
+            throw new RuntimeException("Unexpected error while checking user existence: " + e.getMessage(), e);
+        }
     }
 
     //to be deleted
