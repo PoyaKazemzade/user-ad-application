@@ -10,6 +10,7 @@ import se.yrgo.adservice.domain.AdCategory;
 import se.yrgo.adservice.dto.AdDto;
 import se.yrgo.adservice.dto.AdResponseDto;
 import se.yrgo.adservice.jms.AdMessageProducer;
+import se.yrgo.adservice.jms.DeleteAdMessageProducer;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,12 +20,14 @@ public class AdService {
     private final AdRepository adRepository;
     private final AdCategoryRepository adCategoryRepository;
     private final AdMessageProducer adMessageProducer;
+    private final DeleteAdMessageProducer deleteAdMessageProducer;
 
     @Autowired
-    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer) {
+    public AdService(AdRepository adRepository, AdCategoryRepository adCategoryRepository, AdMessageProducer adMessageProducer, DeleteAdMessageProducer deleteAdMessageProducer) {
         this.adRepository = adRepository;
         this.adCategoryRepository = adCategoryRepository;
         this.adMessageProducer = adMessageProducer;
+        this.deleteAdMessageProducer = deleteAdMessageProducer;
     }
 
     public AdResponseDto getAdById(Integer id) {
@@ -55,6 +58,11 @@ public class AdService {
 
     public void deleteAd(Integer id) {
         adRepository.deleteById(id);
+        try {
+            deleteAdMessageProducer.sendDeleteAdMessageToQueue(id);
+        } catch (Exception e) {
+            System.err.println("Failed to send delete message to the queue: " + e.getMessage());
+        }
     }
 
     public Ad updateAd(Integer id, AdDto adDto) {
@@ -72,7 +80,6 @@ public class AdService {
 
         return adRepository.save(existingAd);
     }
-
 
     //to be deleted
 //    public List<AdResponseDto> getAllAds() {

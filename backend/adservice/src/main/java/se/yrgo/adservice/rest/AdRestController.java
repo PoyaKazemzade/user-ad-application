@@ -35,7 +35,7 @@ public class AdRestController {
         return adService.updateAd(id, adDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteAd(@PathVariable Integer id) {
         adService.deleteAd(id);
     }
