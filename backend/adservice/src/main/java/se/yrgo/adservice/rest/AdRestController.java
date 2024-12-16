@@ -3,7 +3,8 @@ package se.yrgo.adservice.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.adservice.domain.Ad;
-import se.yrgo.adservice.service.AdMessageProducer;
+import se.yrgo.adservice.dto.AdDto;
+import se.yrgo.adservice.dto.AdResponseDto;
 import se.yrgo.adservice.service.AdService;
 
 import java.util.List;
@@ -13,37 +14,33 @@ import java.util.List;
 public class AdRestController {
 
     private final AdService adService;
-    private final AdMessageProducer adMessageProducer;
 
     @Autowired
-    public AdRestController(AdService adService, AdMessageProducer adMessageProducer) {
+    public AdRestController(AdService adService) {
         this.adService = adService;
-        this.adMessageProducer = adMessageProducer;
     }
 
     @GetMapping
-    public List<Ad> getAllAds() {
+    public List<AdResponseDto> getAllAds() {
         return adService.getAllAds();
     }
 
+
     @GetMapping("/{id}")
-    public Ad getAdById(@PathVariable Integer id) {
+    public AdResponseDto getAdById(@PathVariable Integer id) {
         return adService.getAdById(id);
     }
 
+    // Create a new ad
     @PostMapping
-    public Ad createAd(@RequestBody Ad ad) {
-        try {
-            return adService.createAd(ad);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to send message to queue: " + e.getMessage(), e);
-        }
+    public Ad createAd(@RequestBody AdDto adDto) {
+        return adService.createAd(adDto);
     }
 
+    // Update an existing ad
     @PutMapping("/{id}")
-    public Ad updateAd(@PathVariable Integer id, @RequestBody Ad ad) {
-        ad.setId(id);
-        return adService.createAd(ad); // Using createAd here for both update and create simplicity
+    public Ad updateAd(@PathVariable Integer id, @RequestBody AdDto adDto) {
+        return adService.updateAd(id, adDto);
     }
 
     @DeleteMapping("/{id}")
@@ -52,7 +49,8 @@ public class AdRestController {
     }
 
     @GetMapping("/category/{categoryId}")
-    public List<Ad> getAdsByCategory(@PathVariable Integer categoryId) {
+    public List<AdResponseDto> getAdsByCategory(@PathVariable Integer categoryId) {
         return adService.getAdsByCategory(categoryId);
     }
+
 }
