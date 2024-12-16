@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AdEventJmsListener {
@@ -51,11 +52,19 @@ public class AdEventJmsListener {
         }
 
         adCopyData.save(newAdCopy);
-        updateTrendingAdCategoriesData(newAdCopy);
+        incrementTrendingAdCategory(newAdCopy);
 
     }
 
-    private void updateTrendingAdCategoriesData(AdCopy newAdCopy) {
+    @JmsListener(destination = "deleteAdQueue")
+    public void receiveDeleteAdMessage(String message) {
+        var adId = Integer.parseInt(message);
+        var adToDelete = adCopyData.findById(adId);
+        adToDelete.ifPresent(adCopyData::delete);
+        decrementTrendingAdCategory(adToDelete);
+    }
+
+    private void incrementTrendingAdCategory(AdCopy newAdCopy) {
         // Handle the trending ad categories
         trendingAdData.findByCategoryName(newAdCopy.getCategoryName())
                 .ifPresentOrElse(category -> {
@@ -70,11 +79,22 @@ public class AdEventJmsListener {
                 });
     }
 
-    @JmsListener(destination = "deleteAdQueue")
-    public void receiveDeleteAdMessage(String message) {
-        var adId = Integer.parseInt(message);
-        var adToDelete = adCopyData.findById(adId);
-        adToDelete.ifPresent(adCopyData::delete);
-    }
+    private void decrementTrendingAdCategory(Optional<AdCopy> adCopyToDelete) {
+        adCopyToDelete.ifPresent(adCopy ->
+                trendingAdData.findByCategoryName(adCopy.getCategoryName())
+                        .ifPresentOrElse(category -> {
+                            long updatedCount = category.getAdCount() - 1;
 
+                            if (updatedCount <= 0) {
+                                trendingAdData.delete(category);
+                            } else {
+                                category.setAdCount(updatedCount);
+                                trendingAdData.save(category);
+                            }
+                        }, () -> {
+                            throw new IllegalArgumentException("TrendingAdCategory not found for categoryName: "
+                                    + adCopy.getCategoryName());
+                        })
+        );
+    }
 }
