@@ -1,10 +1,12 @@
 package se.yrgo.userservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user_tbl")
+@Table(name = "USER_TBL")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -15,16 +17,18 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JsonManagedReference
     private UserAddress address;
 
-    // Getters and Setters
 
-    public int getId() {
+    // Getters och Setters
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,6 +54,8 @@ public class User {
 
     public void setAddress(UserAddress address) {
         this.address = address;
-        address.setUser(this); // Bi-directional association
+        if (address != null) {
+            address.setUser(this); // Sätter den bi-direktionella relationen
+        }
     }
 }
