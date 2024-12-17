@@ -56,6 +56,7 @@ From the frontend directory run:
 	1.	Development Mode
 
     ```bash
+    npm install
     npm run dev
     ```
 
