@@ -15,9 +15,9 @@ public class TrendingAdCategoryService {
     }
 
     /*
-     * List all trending categories sorted by adCount in descending order
+     * List top 3 categories with highest adCount, sorted by adCount in descending order
      */
-    public List<TrendingAdCategory> getTrendingCategories() {
-        return data.findByOrderByAdCountDesc();
+    public List<TrendingAdCategory> getTopThreeAdCategories() {
+        return data.findTop3ByOrderByAdCountDesc();
     }
 }

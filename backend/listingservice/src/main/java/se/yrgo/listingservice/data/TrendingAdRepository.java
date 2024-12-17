@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface TrendingAdRepository extends JpaRepository<TrendingAdCategory, Integer> {
-    List<TrendingAdCategory> findByOrderByAdCountDesc();
+    List<TrendingAdCategory> findTop3ByOrderByAdCountDesc();
     Optional<TrendingAdCategory> findByCategoryName(String categoryName);
 }

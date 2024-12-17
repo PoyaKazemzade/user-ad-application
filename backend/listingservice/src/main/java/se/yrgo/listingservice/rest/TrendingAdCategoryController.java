@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.yrgo.listingservice.data.TrendingAdRepository;
 import se.yrgo.listingservice.domain.TrendingAdCategory;
 import se.yrgo.listingservice.service.TrendingAdCategoryService;
 
@@ -59,7 +58,7 @@ public class TrendingAdCategoryController {
             )
     })
     public ResponseEntity<List<TrendingAdCategory>> getTrendingCategories() {
-        var res = trendingAdCategoryService.getTrendingCategories();
+        var res = trendingAdCategoryService.getTopThreeAdCategories();
         if (res.isEmpty()) {
             throw new ResourceNotFoundException("No top categories available.");
         }
