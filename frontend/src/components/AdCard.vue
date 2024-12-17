@@ -22,7 +22,7 @@ defineProps({
   >
     <BCardText>
       <div class="container">
-        <span id="idTag">#{{ id }}</span>
+        <span id="idTag">ID #{{ id }}</span>
         <span class="text-dark-emphasis d-block mb-1"><strong>User: </strong> {{ owner }}</span>
         <span class="text-dark-emphasis d-block mb-1"><strong>Published: </strong> {{ created }}</span>
         <span class="text-body d-block mb-1"> {{ description }}</span>

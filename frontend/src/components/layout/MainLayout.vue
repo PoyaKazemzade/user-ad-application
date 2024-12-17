@@ -1,7 +1,7 @@
 <template>
   <BNavbar v-b-color-mode="'dark'" toggleable="lg" variant="secondary-subtle">
     <BNavbarBrand>
-      <router-link to="/home" class="nav-link">Bazam</router-link>
+      <router-link to="/home" class="nav-link">Bazaar</router-link>
     </BNavbarBrand>
     <BNavbarToggle target="nav-collapse"/>
     <BCollapse id="nav-collapse" is-nav>

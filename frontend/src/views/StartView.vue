@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1 class="text-center">Welcome to Bazam Marketplace</h1>
+    <h1 class="text-center">Welcome to Bazaar</h1>
+    <p class="bg-primary text-bg-primary">Your favorite online marketplace</p>
   </div>
   <div class="parent">
     <div class="div1">
@@ -56,7 +57,7 @@ onMounted(async () => {
 
 <style scoped>
 h1 {
-  padding: 1rem;
+  padding-top: 1rem;
 }
 
 .fig {

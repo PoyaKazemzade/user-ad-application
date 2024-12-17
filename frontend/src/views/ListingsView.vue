@@ -1,6 +1,6 @@
 <template>
-  <div class="container flex-column">
-    <h1>Listings</h1>
+  <h1>Listings</h1>
+  <div class="container d-flex flex-wrap justify-content-center align-items-center gap-3">
     <AdCard
         v-for="ad in allAds"
         :key="ad.id"
@@ -34,5 +34,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Your styles for ListingsView */
+h1 {
+  padding: 1rem;
+}
 </style>
