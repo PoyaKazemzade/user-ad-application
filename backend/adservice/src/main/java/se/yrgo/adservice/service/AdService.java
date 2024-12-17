@@ -1,5 +1,6 @@
 package se.yrgo.adservice.service;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,29 @@ public class AdService {
         this.adMessageProducer = adMessageProducer;
         this.deleteAdMessageProducer = deleteAdMessageProducer;
         this.restTemplate = restTemplate;
+    }
+
+    @PostConstruct
+    public void initializeAds() {
+        if (adRepository.count() == 0) {
+            List<AdDto> ads = List.of(
+                    new AdDto("John Doe", "Gaming Laptop for Sale", "High-performance gaming laptop with RTX 3080 graphics card.", 1200, 1),
+                    new AdDto("Jane Smith", "iPhone 13 Pro Max", "Brand new iPhone 13 Pro Max, 128GB, space gray.", 999, 2),
+                    new AdDto("John Doe", "Used Toyota Corolla", "2015 Toyota Corolla in excellent condition with low mileage.", 7000, 3),
+                    new AdDto("Jane Smith", "Winter Jacket for Women", "Stylish and warm winter jacket, size M.", 85, 4),
+                    new AdDto("John Doe", "Golden Retriever Puppies", "Adorable golden retriever puppies looking for a new home.", 300, 5),
+                    new AdDto("Jane Smith", "Sofa Set - Like New", "6-seater comfortable sofa set, barely used.", 450, 6),
+                    new AdDto("John Doe", "PlayStation 5 Console", "PS5 console with two controllers and three games.", 550, 1),
+                    new AdDto("Jane Smith", "Samsung Galaxy S22 Ultra", "Brand new Samsung Galaxy S22 Ultra, 256GB storage.", 1100, 2),
+                    new AdDto("John Doe", "Honda Civic 2018", "2018 Honda Civic in excellent condition, fully serviced.", 8500, 3),
+                    new AdDto("Jane Smith", "Dining Table Set", "Wooden dining table set for 4 people, includes chairs.", 200, 6)
+            );
+            for (AdDto ad : ads) {
+                createAd(ad);
+            }
+        } else {
+            System.out.println("There are ads in database");
+        }
     }
 
     public AdResponseDto getAdById(Integer id) {

@@ -7,6 +7,14 @@ public class AdDto {
     private Integer price;
     private Integer categoryId;
 
+    public AdDto(String userName, String title, String description, Integer price, Integer categoryId) {
+        this.userName = userName;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.categoryId = categoryId;
+    }
+
     public String getUserName() {
         return userName;
     }
