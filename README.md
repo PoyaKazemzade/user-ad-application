@@ -35,7 +35,12 @@ The front-end is developed using Vue 3, Bootstrap-vue-next and Typescript. It ai
 
 #### 3.1. Backend Services (Microservices)
 
-Each service is built using Spring Boot. To deploy them, you must deploy them independently on localhost.
+Each service is built using Spring Boot. To deploy them, you must run them independently on localhost.
+*NOTE* You must run the services in the following order:
+1. `userservice`
+2. `adservice`
+3. `listingservice`
+
 The services are configured to run on the following server ports:
 - `userservice` = port 8085
 - `adservice` = port 8189
