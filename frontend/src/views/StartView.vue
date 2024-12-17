@@ -1,0 +1,81 @@
+<template>
+  <div>
+    <h1 class="text-center">Welcome to Bazam Marketplace</h1>
+  </div>
+  <div class="parent">
+    <div class="div1">
+      <img class="figure fig" :src="TestImage" alt="Hello">
+    </div>
+    <div class="div2 align-content-center bg-body-tertiary">
+      <span class="blockquote text-center">
+        "I just wanna buy stuff." - Helen, 30
+      </span>
+    </div>
+    <div class="div3 bg-body-secondary">
+      <p>
+         Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+        Nullam sed metus id metus elementum facilisis. 
+        In orci mi, interdum sit amet arcu ut, egestas luctus sapien. 
+        Praesent viverra tortor enim, et rutrum augue aliquam nec. 
+        Curabitur porta tempus vehicula. Aenean id lobortis turpis.
+      </p>
+      <p>
+        Phasellus ullamcorper turpis ut odio congue, nec hendrerit dui mollis.
+        Curabitur ornare ex vel orci egestas, eu aliquet ante aliquet.
+        Sed sit amet dolor ac velit malesuada pellentesque.
+      </p>
+    </div>
+    <div class="div4">
+      <h2 class="mt-1">Top categories</h2>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import TestImage from '@/assets/images/20943818.jpg';
+</script>
+
+<style scoped>
+h1 {
+  padding: 1rem;
+}
+
+.fig {
+  max-width: 400px;
+}
+
+.parent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.div1 {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.div2 {
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+.div3 {
+  grid-area: 2 / 1 / 3 / 2;
+}
+
+.div4 {
+  grid-area: 2 / 2 / 3 / 3;
+}
+
+.vertical-txt {
+  font-size: 4rem;
+  transform: rotate(90deg);
+  white-space: nowrap; 
+  padding: 1rem; 
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+}
+</style>
+

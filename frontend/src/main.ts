@@ -1,9 +1,13 @@
 import { createApp } from 'vue'
+import {createBootstrap} from 'bootstrap-vue-next'
 import './style.css'
-import App from './App.vue'
-import { BListGroup, BListGroupItem } from 'bootstrap-vue-next';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
-const app = createApp(App);
-app.component('BListGroup', BListGroup); // Register BListGroup globally
-app.component('BListGroupItem', BListGroupItem); // Register BListGroupItem globally
-app.mount('#app');
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+app.use(createBootstrap()) // Important
+app.use(router)
+app.mount('#app')

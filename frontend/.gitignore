@@ -1,0 +1,39 @@
+# Node Modules
+node_modules/
+
+# Vite Build Output
+dist/
+
+# Local Environment Files
+.env
+.env.*.local
+
+# TypeScript Cache
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Coverage Reports
+coverage/
+
+# Editor/IDE Files
+.vscode/
+.idea/
+
+# Mac System Files
+.DS_Store
+
+build/Release
+.tsbuildinfo
+.npm
+.edlintcache
+.tgz
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+

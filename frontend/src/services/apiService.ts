@@ -16,7 +16,7 @@ const adServiceApi = axios.create({
 
 export const getAllAds = async (): Promise<Ad[]> => {
     try {
-        const response = await adServiceApi.get('/');
+        const response = await adServiceApi.get<Ad[]>('/');
         return response.data;
     } catch (error) {
         console.error('Error fetching Ad Service data', error);
@@ -26,7 +26,7 @@ export const getAllAds = async (): Promise<Ad[]> => {
 
 export const getAdById = async (id: number): Promise<Ad> => {
     try {
-        const response = await adServiceApi.get(`/${id}`);
+        const response = await adServiceApi.get<Ad>(`/${id}`);
         return response.data;
     } catch (error) {
         console.error(`Error fetching ad with ID ${id}`, error);
@@ -36,7 +36,7 @@ export const getAdById = async (id: number): Promise<Ad> => {
 
 export const createAd = async (ad: Ad): Promise<Ad> => {
     try {
-        const response = await adServiceApi.post('/', ad);
+        const response = await adServiceApi.post<Ad>('/', ad);
         return response.data;
     } catch (error) {
         console.error('Error creating ad', error);
@@ -66,7 +66,7 @@ const adCategoryServiceApi = axios.create({
 
 export const getAllCategories = async (): Promise<AdCategory[]> => {
     try {
-        const response = await adCategoryServiceApi.get('/');
+        const response = await adCategoryServiceApi.get<AdCategory[]>('/');
         return response.data;
     } catch (error) {
         console.error('Error fetching all categories', error);
@@ -76,8 +76,8 @@ export const getAllCategories = async (): Promise<AdCategory[]> => {
 
 export const getCategoryById = async (id: number): Promise<AdCategory> => {
     try {
-        const response = await adCategoryServiceApi.get(`/${id}`);
-        return response.data; // Returns the single category
+        const response = await adCategoryServiceApi.get<AdCategory>(`/${id}`);
+        return response.data;
     } catch (error) {
         console.error(`Error fetching category with ID ${id}`, error);
         throw error;
@@ -96,7 +96,7 @@ const adCopyServiceApi = axios.create({
 
 export const getListOfAds = async (): Promise<AdCopy[]> => {
     try {
-        const response = await adCopyServiceApi.get('/');
+        const response = await adCopyServiceApi.get<AdCopy[]>('/');
         return response.data;
     } catch (error) {
         console.error('Error fetching Ad copy data from Listing Service', error);
@@ -116,7 +116,7 @@ const trendingAdCategoryServiceApi = axios.create({
 // Get trending ad categories
 export const getTrendingAdCategories = async (): Promise<TrendingAdCategory[]> => {
     try {
-        const response = await trendingAdCategoryServiceApi.get('/');
+        const response = await trendingAdCategoryServiceApi.get<TrendingAdCategory[]>('/');
         return response.data;
     } catch (error) {
         console.error('Error fetching Trending Ad Categories', error);
