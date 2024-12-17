@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TrendingAdRepository extends JpaRepository<TrendingAdCategory, Integer> {
-    List<TrendingAdCategory> findByOrderByAdCountDesc();
+    List<TrendingAdCategory> findTop3ByOrderByAdCountDesc();
 }
