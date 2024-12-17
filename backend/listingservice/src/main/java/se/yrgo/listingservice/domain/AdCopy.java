@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 public class AdCopy {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private int id; // must match the id of corresponding row in Ad table from AdService
     @Column(nullable = false, length = 50)
     private String title;
     @Column(nullable = false, length = 250)
