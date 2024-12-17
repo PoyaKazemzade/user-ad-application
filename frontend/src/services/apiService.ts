@@ -87,7 +87,7 @@ export const getCategoryById = async (id: number): Promise<AdCategory> => {
 // Listing Service
 // Ad Copy
 const adCopyServiceApi = axios.create({
-    baseURL: 'http://localhost:8080/api/v1/ads', // Base URL
+    baseURL: 'http://localhost:8190/api/v1/ads', // Base URL
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export const getListOfAds = async (): Promise<AdCopy[]> => {
 
 // Ad Copy
 const trendingAdCategoryServiceApi = axios.create({
-    baseURL: 'http://localhost:8080/api/v1/trending-categories', // Base URL
+    baseURL: 'http://localhost:8190/api/v1/trending-categories', // Base URL
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ const trendingAdCategoryServiceApi = axios.create({
 });
 
 // Get trending ad categories
-export const getTrendingAdCategories = async (): Promise<TrendingAdCategory[]> => {
+export const getTop3TrendingAdCategories = async (): Promise<TrendingAdCategory[]> => {
     try {
         const response = await trendingAdCategoryServiceApi.get<TrendingAdCategory[]>('/');
         return response.data;

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 defineProps({
   id: Number,
-  created: String,
+  created: {type: String, required: true},
   owner: {type: String, required: true},
   categoryName: {type: String, required: true},
   adTitle: {type: String, required: true},
   description: {type: String, required: true},
-  price: Number
+  price: {type: Number, required: true}
 })
 
 </script>
@@ -21,12 +21,12 @@ defineProps({
       style="max-width: 20rem"
   >
     <BCardText>
-     <div class="container">
-       <span id="idTag">#{{ id }}</span>
-       <span class="text-dark-emphasis d-block mb-1"><strong>User: </strong> {{ owner }}</span>
-       <span class="text-dark-emphasis d-block mb-1"><strong>Published: </strong> {{ created }}</span>
-       <span class="text-body d-block mb-1"> {{ description }}</span>
-     </div>
+      <div class="container">
+        <span id="idTag">#{{ id }}</span>
+        <span class="text-dark-emphasis d-block mb-1"><strong>User: </strong> {{ owner }}</span>
+        <span class="text-dark-emphasis d-block mb-1"><strong>Published: </strong> {{ created }}</span>
+        <span class="text-body d-block mb-1"> {{ description }}</span>
+      </div>
     </BCardText>
     <BButton href="#" variant="primary">Contact seller</BButton>
   </BCard>

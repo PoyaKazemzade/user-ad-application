@@ -8,15 +8,15 @@
     </div>
     <div class="div2 align-content-center bg-body-tertiary">
       <span class="blockquote text-center">
-        "I just wanna buy stuff." - Helen, 30
+        "I just wanna buy your stuff." - anonymous
       </span>
     </div>
-    <div class="div3 bg-body-secondary">
+    <div class="div3 bg-primary text-bg-primary">
       <p>
-         Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-        Nullam sed metus id metus elementum facilisis. 
-        In orci mi, interdum sit amet arcu ut, egestas luctus sapien. 
-        Praesent viverra tortor enim, et rutrum augue aliquam nec. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Nullam sed metus id metus elementum facilisis.
+        In orci mi, interdum sit amet arcu ut, egestas luctus sapien.
+        Praesent viverra tortor enim, et rutrum augue aliquam nec.
         Curabitur porta tempus vehicula. Aenean id lobortis turpis.
       </p>
       <p>
@@ -26,13 +26,32 @@
       </p>
     </div>
     <div class="div4">
-      <h2 class="mt-1">Top categories</h2>
+      <h2 class="mt-1 ">Top categories</h2>
+      <BListGroup>
+        <BListGroupItem
+            v-for="(category, index) in topCategories"
+            :key="category.id"
+            class="d-flex justify-content-center gap-2 align-items-start"
+        >
+          <span class="badge bg-success">{{ index + 1}}</span>
+          <span> {{ category.categoryName }} - ({{ category.adCount }} ads)</span>
+        </BListGroupItem>
+      </BListGroup>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import {ref, onMounted} from 'vue';
+import {getTop3TrendingAdCategories} from '../services/apiService.ts';
+import {TrendingAdCategory} from '../models/TrendingAdCategory.ts';
 import TestImage from '@/assets/images/20943818.jpg';
+
+const topCategories = ref([] as TrendingAdCategory[]);
+
+onMounted(async () => {
+  topCategories.value = await getTop3TrendingAdCategories();
+});
 </script>
 
 <style scoped>
@@ -71,11 +90,11 @@ h1 {
 .vertical-txt {
   font-size: 4rem;
   transform: rotate(90deg);
-  white-space: nowrap; 
-  padding: 1rem; 
+  white-space: nowrap;
+  padding: 1rem;
   display: flex;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
 }
 </style>
 

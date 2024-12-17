@@ -12,11 +12,9 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "nodenext",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["*"]
     },
     "types": [
       "vite/client"

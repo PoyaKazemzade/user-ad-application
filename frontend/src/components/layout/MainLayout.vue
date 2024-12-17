@@ -1,17 +1,20 @@
-<script setup lang="ts">
-
-</script>
-
-<!-- MainLayout.vue -->
 <template>
-  <!-- Main Layout -->
   <BNavbar v-b-color-mode="'dark'" toggleable="lg" variant="secondary-subtle">
-    <BNavbarBrand href="/home">Bazam</BNavbarBrand>
+    <BNavbarBrand>
+      <router-link to="/home" class="nav-link">Bazam</router-link>
+    </BNavbarBrand>
     <BNavbarToggle target="nav-collapse"/>
     <BCollapse id="nav-collapse" is-nav>
       <BNavbarNav>
-        <BNavItem href="#">Buy</BNavItem>
-        <BNavItem href="#">Sell</BNavItem>
+        <BNavItem disabled>
+          <router-link to="#" class="nav-link">About</router-link>
+        </BNavItem>
+        <BNavItem>
+          <router-link to="/home/buy" class="nav-link">Buy</router-link>
+        </BNavItem>
+        <BNavItem disabled>
+          <router-link to="#" class="nav-link">Sell</router-link>
+        </BNavItem>
       </BNavbarNav>
       <!-- Right aligned nav items -->
       <BNavbarNav class="ms-auto mb-2 mb-lg-0">
@@ -38,8 +41,12 @@
   </main>
 
   <footer class="foooter">
-    <span>Github repo <a href="https://github.com/PoyaKazemzade/user-ad-application">(www.github.com)</a></span></footer>
+    <span>Github repo <a href="https://github.com/PoyaKazemzade/user-ad-application">(www.github.com)</a></span>
+  </footer>
 </template>
+
+<script setup lang="ts">
+</script>
 
 <style scoped>
 .foooter {
@@ -47,7 +54,7 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 0; 
+  right: 0;
   text-align: center;
   padding: 10px;
 }

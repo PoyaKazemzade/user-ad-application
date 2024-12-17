@@ -18,7 +18,7 @@ const router = createRouter({
                     component: () => import('../views/StartView.vue'),
                 },
                 {
-                    path: 'listings',
+                    path: 'buy',
                     name: 'ads',
                     component: () => import('../views/ListingsView.vue'),
                 },
