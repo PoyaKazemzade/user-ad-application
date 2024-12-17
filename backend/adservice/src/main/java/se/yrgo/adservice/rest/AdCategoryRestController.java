@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/categories")
+@CrossOrigin(origins = "http://localhost:5173")  // Allow requests from frontend URL
 public class AdCategoryRestController {
 
     private final AdCategoryService adCategoryService;
@@ -19,7 +20,7 @@ public class AdCategoryRestController {
         this.adCategoryService = adCategoryService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public List<AdCategory> getAllCategories() {
         return adCategoryService.getAllCategories();
     }
@@ -29,7 +30,7 @@ public class AdCategoryRestController {
         return adCategoryService.getCategoryById(id);
     }
 
-    @PostMapping
+    @PostMapping("/")
     public AdCategory createCategory(@RequestBody AdCategory adCategory) {
         return adCategoryService.createCategory(adCategory);
 

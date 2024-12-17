@@ -6,11 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import se.yrgo.listingservice.data.AdCopyRepository;
+import org.springframework.web.bind.annotation.*;
 import se.yrgo.listingservice.domain.AdCopy;
 import se.yrgo.listingservice.domain.TrendingAdCategory;
 import se.yrgo.listingservice.service.AdCopyService;
@@ -23,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("api/v1/ads")
+@CrossOrigin(origins = "http://localhost:5173")  // Allow requests from frontend URL
 public class AdCopyController {
     private final AdCopyService adCopyService;
 
@@ -35,7 +32,7 @@ public class AdCopyController {
      *
      * @return a list of all ads
      */
-    @GetMapping
+    @GetMapping("/")
     @Operation(
             summary = "Get all available ads.",
             description = "Returns a list of all available ads."
@@ -74,7 +71,7 @@ public class AdCopyController {
      * @param categoryName name of the category
      * @return a list of ads in the category
      */
-    @GetMapping(params = {"filter"})
+    @GetMapping(value = "/category", params = {"filter"})
     @Operation(
             summary = "Get all ads filtered on ad category.",
             description = "Returns a list of all ads in the specific category."

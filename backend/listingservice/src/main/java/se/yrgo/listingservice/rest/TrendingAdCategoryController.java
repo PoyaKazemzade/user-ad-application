@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("api/v1/trending-categories")
+@CrossOrigin(origins = "http://localhost:5173")  // Allow requests from frontend URL
 public class TrendingAdCategoryController {
     private final TrendingAdCategoryService trendingAdCategoryService;
 
@@ -32,7 +34,7 @@ public class TrendingAdCategoryController {
      *
      * @return result
      */
-    @GetMapping
+    @GetMapping("/")
     @Operation(
             summary = "Get top categories",
             description = "Returns a list of all categories with available ads, sorted in DESC order with most ads populated in them."
