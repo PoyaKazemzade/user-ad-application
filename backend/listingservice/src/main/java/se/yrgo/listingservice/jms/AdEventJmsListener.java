@@ -31,6 +31,7 @@ public class AdEventJmsListener {
         AdCopy newAdCopy = new AdCopy();
 
         // parse the received message here
+        newAdCopy.setId(Integer.parseInt(message.get("id")));
         newAdCopy.setTitle(message.get("title"));
         newAdCopy.setDescription(message.get("description"));
         newAdCopy.setCategoryName(message.get("categoryName"));

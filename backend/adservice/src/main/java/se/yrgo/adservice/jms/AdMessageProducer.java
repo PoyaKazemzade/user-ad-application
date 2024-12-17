@@ -35,6 +35,7 @@ public class AdMessageProducer {
 
     private static HashMap<String, String> getMappedMessageData(Ad newAd) {
         HashMap<String, String> newAdMessage = new HashMap<>();
+        newAdMessage.put("id", newAd.getId().toString());
         newAdMessage.put("userName", newAd.getUserName());
         newAdMessage.put("categoryId", newAd.getCategory().getId().toString());
         newAdMessage.put("categoryName", newAd.getCategory().getCategoryName());
