@@ -66,8 +66,8 @@ This will start the development server at http://localhost:5173 (probably, port 
     
     +--------------------+
     |                    |
-    |      Vue UI      |
-    |    (frontend)       |
+    |      Vue UI        |
+    |    (frontend)      |
     |                    |
     +---------+----------+
             |
