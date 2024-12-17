@@ -1,9 +1,14 @@
 <template>
   <h1>Listings</h1>
-  <b-button
-      @click="getAdsByCategory('vehicles')">
-    Vehicles
-  </b-button>
+  <div class="mb-3">
+    <b-button
+        v-for="category in categories"
+        :key="category.id"
+        @click="getAdsByCategory(category.categoryName)"
+        class="me-2">
+      {{ category.categoryName }}
+    </b-button>
+  </div>
   <div class="container d-flex flex-wrap justify-content-center align-items-center gap-3">
     <AdCard
         v-for="ad in allAds"
@@ -21,17 +26,21 @@
 
 <script setup lang="ts">
 import {ref, onMounted} from 'vue';
-import {getAdsForCategory, getListOfAds} from '../services/apiService.ts';
+import {getAdsForCategory, getAllCategories, getListOfAds} from '../services/apiService.ts';
 import {AdCopy} from "../models/AdCopy.ts";
 import AdCard from "@/components/AdCard.vue";
+import {AdCategory} from "../models/AdCategory.ts";
 
 const allAds = ref([] as AdCopy[]);
+const categories = ref([] as AdCategory[]);
 
 onMounted(async () => {
   try {
     allAds.value = await getListOfAds();
+
+    categories.value = await getAllCategories();
   } catch (error) {
-    console.error("Error fetching ads:", error);
+    console.error("Error fetching ads or all categories:", error);
   }
 });
 
