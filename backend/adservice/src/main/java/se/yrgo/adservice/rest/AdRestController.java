@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/ads")
+@CrossOrigin(origins = "http://localhost:5173")  // Allow requests from frontend URL
 public class AdRestController {
 
     private final AdService adService;

@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/categories")
+@CrossOrigin(origins = "http://localhost:5173")  // Allow requests from frontend URL
 public class AdCategoryRestController {
 
     private final AdCategoryService adCategoryService;
