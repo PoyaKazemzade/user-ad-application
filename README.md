@@ -63,7 +63,7 @@ This will start the development server at http://localhost:5173 (probably, port 
 
 ### 4. Microservices Architecture with Messaging
 
-    ```bash
+    
     +--------------------+
     |                    |
     |      Vue UI      |
@@ -95,7 +95,7 @@ This will start the development server at http://localhost:5173 (probably, port 
                                             6. Listening service receives message from broker.
                                             7. Processes the message and performs operations.
                                                     
-    ```
+    
 
 #### 4.1 Microservices Event-driven Design (EDD)
 The `listing-servicec`'s db stores the count of ads per category based on ad creation and deletion events in the `ad-service`. It uses a message queue as an asynchronous way to update (synchronize) the `listing-service` whenever data in the `ad-service` changes. That provdes these key benefits:
