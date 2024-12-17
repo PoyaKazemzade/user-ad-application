@@ -1,5 +1,9 @@
 <template>
   <h1>Listings</h1>
+  <b-button
+      @click="getAdsByCategory('vehicles')">
+    Vehicles
+  </b-button>
   <div class="container d-flex flex-wrap justify-content-center align-items-center gap-3">
     <AdCard
         v-for="ad in allAds"
@@ -17,7 +21,7 @@
 
 <script setup lang="ts">
 import {ref, onMounted} from 'vue';
-import {getListOfAds} from '../services/apiService.ts';
+import {getAdsForCategory, getListOfAds} from '../services/apiService.ts';
 import {AdCopy} from "../models/AdCopy.ts";
 import AdCard from "@/components/AdCard.vue";
 
@@ -26,11 +30,19 @@ const allAds = ref([] as AdCopy[]);
 onMounted(async () => {
   try {
     allAds.value = await getListOfAds();
-    console.log("Ads:", allAds.value); // Log the ads to the console
   } catch (error) {
     console.error("Error fetching ads:", error);
   }
 });
+
+const getAdsByCategory = async (categoryName: string) => {
+  try {
+    allAds.value = await getAdsForCategory(categoryName);
+  } catch (error) {
+    console.error(`Error fetching ads for category "${categoryName}":`, error);
+  }
+};
+
 </script>
 
 <style scoped>
