@@ -14,10 +14,10 @@ The application is composed of three microservices, each responsible for a speci
   - Manages user registration and user data.
   
 - **Ad Service (`adservice`)**
-  - Creation and management of ads for items (create and delete ads).
+  - Creation and management of ads for items (create and delete ads) aswell as ad categories.
   
 - **Listing Service (`listingservice`)**
-  - Management of lists of ads aswell as enabling searching and filtering for ads.
+  - Management of lists of ads aswell as enabling searching and filtering for ads. For its db, it prioritizes read performance and may sacrifice some normalization and strict referential integrity in favor of speed and scalability. Keeps an updated count on how many ads exist in each ad category.
   
 - **Messaging Service (`registry`)**
   - Handles asynchronous communication between `adservice` (provider) and `listingservice` (consumer) using the message broker ActiveMQ.
@@ -61,7 +61,7 @@ From the frontend directory run:
 
 This will start the development server at http://localhost:5173 (probably, port may vary...).
 
-### 5. Reactive Microservices Architecture with Messaging
+### 4. Microservices Architecture with Messaging
 
     ```bash
     +--------------------+
@@ -88,7 +88,7 @@ This will start the development server at http://localhost:5173 (probably, port 
             v
     +---------+----------+             +--------------------+
     |                    | 5. Message |                     |
-    |  Message Broker    |<-----------+   Microservice B    |
+    |  Message Broker    +------------>   Microservice B    |
     | (ActiveMQ)         |   sent to  |   (e.g., Listing    |
     |                    |  listening |   Service)          |
     +--------------------+  service   +---------+----------+
@@ -96,3 +96,10 @@ This will start the development server at http://localhost:5173 (probably, port 
                                             7. Processes the message and performs operations.
                                                     
     ```
+
+#### 4.1 Microservices Event-driven Design (EDD)
+The `listing-servicec`'s db stores the count of ads per category based on ad creation and deletion events in the `ad-service`. It uses a message queue as an asynchronous way to update (synchronize) the `listing-service` whenever data in the `ad-service` changes. That provdes these key benefits:
+- Event-Driven Updates: Ideal for keeping the `listing-service`'s local db in sync with minimal delay.
+- Decoupled Communication: The `ad-service` and `listing-service` don't need to be tightly coupled in terms of uptime.
+
+The `listing-service`'s db essentially acts as a local copy of the ads data in `ad-service`, related to individual ads. It caches the ad details to provide faster access and reduce dependencies on the `ad-service` for every ad query. This can be considered a read-only copy of the ad details.
