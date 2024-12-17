@@ -55,7 +55,7 @@ public class User {
     public void setAddress(UserAddress address) {
         this.address = address;
         if (address != null) {
-            address.setUser(this); // Sätter den bi-direktionella relationen
+            address.setUser(this);
         }
     }
 }

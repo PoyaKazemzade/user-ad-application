@@ -29,6 +29,7 @@ public class UserAddress {
         this.user = user;
     }
 
+    //Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -36,35 +37,27 @@ public class UserAddress {
     public void setId(Integer id) {
         this.id = id;
     }
-
     public String getStreet() {
         return street;
     }
-
     public void setStreet(String street) {
         this.street = street;
     }
-
     public String getCity() {
         return city;
     }
-
     public void setCity(String city) {
         this.city = city;
     }
-
     public String getZipCode() {
         return zipCode;
     }
-
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
-
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }

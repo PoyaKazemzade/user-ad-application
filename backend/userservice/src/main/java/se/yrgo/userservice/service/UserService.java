@@ -33,7 +33,7 @@ public class UserService {
 
         var address1 = new UserAddress("Highway to Hell", "Heaven", "12345", null);
         user1.setAddress(address1);
-        address1.setUser(user1); // Set bi-directional relationship
+        address1.setUser(user1);
 
         var user2 = new User();
         user2.setName("Jane Smith");
@@ -56,10 +56,6 @@ public class UserService {
                 System.out.println("User already exists: " + user.getName());
             }
         }
-    }
-
-        public List<User> getAllUsers() {
-        return userRepository.findAll();
     }
 
     public User saveUser(User user) {
