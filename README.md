@@ -4,6 +4,8 @@
 
 The **simple classifieds platform** is a simple application designed allow users to publish and manage ads for items they want to sell. The system is built using a microservices architecture, ensuring scalability, modularity, and resilience. The front-end is developed using Vue 3.
 
+Each microservices has its own database. DBMS used is H2 with file based approach for simplicity and lightweight during development.
+
 ## Prerequisites
 - Java 17+
 - ActiveMQ
