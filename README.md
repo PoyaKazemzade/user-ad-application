@@ -81,7 +81,7 @@ This will start the development server at http://localhost:5173 (probably, port 
     |                    |
     +---------+----------+
             |
-            | 1. UI sends a request to services REST controllers API (via HTTP).
+            | 1. UI sends a request to service's REST API (via HTTP).
             |
             v
     +---------+----------+
