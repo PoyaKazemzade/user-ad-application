@@ -1,5 +1,8 @@
 <template>
   <h1>Listings</h1>
+  <div v-if="$route.query.q" class="alert alert-info">
+    Showing results for "{{ $route.query.q }}"
+  </div>
   <div class="mb-3">
     <b-button
         v-for="category in categories"
@@ -9,7 +12,8 @@
       {{ category.categoryName }}
     </b-button>
   </div>
-  <div class="container d-flex flex-wrap justify-content-center align-items-center gap-3">
+  <div class="container d-flex flex-wrap justify-content-center 
+  align-items-center gap-3 mb-5">
     <AdCard
         v-for="ad in allAds"
         :key="ad.id"
@@ -25,8 +29,9 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
-import {getAdsForCategory, getAllCategories, getListOfAds} from '../services/apiService.ts';
+import {ref, onMounted, watch} from 'vue';
+import {useRoute} from "vue-router";
+import {getAdsForCategory, getAllCategories, getListOfAds, search} from '../services/apiService.ts';
 import {AdCopy} from "../models/AdCopy.ts";
 import AdCard from "@/components/AdCard.vue";
 import {AdCategory} from "../models/AdCategory.ts";
@@ -34,13 +39,19 @@ import {AdCategory} from "../models/AdCategory.ts";
 const allAds = ref([] as AdCopy[]);
 const categories = ref([] as AdCategory[]);
 
+const route = useRoute();
+
 onMounted(async () => {
   try {
-    allAds.value = await getListOfAds();
-
-    categories.value = await getAllCategories();
+    const query = route.query.q;
+    if (query) {
+      allAds.value = await search(query as string);
+    } else {
+      allAds.value = await getListOfAds();
+      categories.value = await getAllCategories();
+    }
   } catch (error) {
-    console.error("Error fetching ads or all categories:", error);
+    console.error("Error fetching ads", error);
   }
 });
 
@@ -52,6 +63,17 @@ const getAdsByCategory = async (categoryName: string) => {
   }
 };
 
+watch(() => route.query.q, async (newSearch) => {
+  if (newSearch) {
+    try {
+      allAds.value = await search(newSearch as string);
+    } catch (error) {
+      console.error("Error searching ads:", error);
+    }
+  } else {
+    allAds.value = await getListOfAds();
+  }
+});
 </script>
 
 <style scoped>

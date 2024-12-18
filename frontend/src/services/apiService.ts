@@ -116,6 +116,18 @@ export const getAdsForCategory = async (categoryName: string): Promise<AdCopy[]>
     }
 };
 
+export const search = async (querystring: string): Promise<AdCopy[]> => {
+    try {
+        const response = await adCopyServiceApi.get<AdCopy[]>('/search', {
+            params: {q: querystring.trim()}
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching Ad copy data from search for "${querystring}"`, error);
+        throw error;
+    }
+};
+
 // Trending Ad Categories
 const trendingAdCategoryServiceApi = axios.create({
     baseURL: 'http://localhost:8190/api/v1/trending-categories', // Base URL
