@@ -4,6 +4,10 @@
 
 The **simple classifieds platform** is a simple application designed allow users to publish and manage ads for items they want to sell. The system is built using a microservices architecture, ensuring scalability, modularity, and resilience. The front-end is developed using Vue 3.
 
+## Prerequisites
+- Java 17+
+- ActiveMQ
+
 ## Features
 
 ### 1. Microservices Architecture
@@ -36,7 +40,7 @@ The front-end is developed using Vue 3, Bootstrap-vue-next and Typescript. It ai
 #### 3.1. Backend Services (Microservices)
 
 Each service is built using Spring Boot. To deploy them, you must run them independently on localhost.
-*NOTE* You must run the services in the following order:
+*NOTE* Make sure ActiveMQ is up and running locally. You must then run the services in the following order:
 1. `userservice`
 2. `adservice`
 3. `listingservice`
