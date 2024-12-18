@@ -3,6 +3,9 @@
   <div v-if="$route.query.q" class="alert alert-info">
     Showing results for "{{ $route.query.q }}"
   </div>
+  <div v-if="$route.query.q && allAds.length === 0" class="text-dark">
+    <span>No items found</span>
+  </div>
   <div class="mb-3">
     <b-button
         v-for="category in categories"
