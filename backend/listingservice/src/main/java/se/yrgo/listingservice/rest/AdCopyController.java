@@ -19,7 +19,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("api/v1/ads")
-@CrossOrigin(origins = "http://localhost:5173")  // Allow requests from frontend URL
+@CrossOrigin(origins = "http://localhost:5173")
+// Allow requests from frontend URL
 public class AdCopyController {
     private final AdCopyService adCopyService;
 
@@ -149,7 +150,7 @@ public class AdCopyController {
             @Parameter(description = "Search term to filter ads by", required = true)
             @RequestParam(value = "q", required = false) String query) {
         if (query == null || query.isBlank()) {
-            throw new IllegalArgumentException("Search query was empty.");
+            return ResponseEntity.badRequest().body(List.of());
         }
         var res = adCopyService.searchAds(query);
         if (res.isEmpty()) {
