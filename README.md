@@ -78,7 +78,10 @@ From the frontend directory run:
 
 This will start the development server at http://localhost:5173 (probably, port may vary...).
 
-### 4. Microservices Architecture with Messaging
+### 4. Screenshots frontend
+![image](https://github.com/user-attachments/assets/dd6be129-0d27-437b-8076-ea0ca7880a01)
+
+### 5. Microservices Architecture with Messaging
 
     
     +--------------------+
