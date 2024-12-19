@@ -6,6 +6,8 @@ The **simple classifieds platform** is a simple application designed allow users
 
 Each microservices has its own database. DBMS used is H2 with file based approach for simplicity and lightweight during development.
 
+The system handles asynchronous communication between `adservice` (provider) and `listingservice` (consumer) using the message broker ActiveMQ.
+
 ## Prerequisites
 - Java 17+
 - ActiveMQ
@@ -24,9 +26,6 @@ The application is composed of three microservices, each responsible for a speci
   
 - **Listing Service (`listingservice`)**
   - Management of lists of ads aswell as enabling searching and filtering for ads. For its db, it prioritizes read performance and may sacrifice some normalization and strict referential integrity in favor of speed and scalability. Keeps an updated count on how many ads exist in each ad category.
-  
-- **Messaging Service (`registry`)**
-  - Handles asynchronous communication between `adservice` (provider) and `listingservice` (consumer) using the message broker ActiveMQ.
 
 ### 2. Front-End: Vue UI
 
