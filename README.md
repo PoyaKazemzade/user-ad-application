@@ -41,8 +41,8 @@ The front-end is developed using Vue 3, Bootstrap-vue-next and Typescript. It ai
 
 #### 3.1. Backend Services (Microservices)
 
-Each service is built using Spring Boot. To deploy them, you must run them independently on localhost.
-*NOTE* Make sure ActiveMQ is up and running locally. You must then run the services in the following order:
+Each service is built using Spring Boot. To deploy them, you must run them independently on localhost.  
+*Note!* Make sure ActiveMQ is up and running locally. You must then run the services in the following order:
 1. `userservice`
 2. `adservice`
 3. `listingservice`
@@ -50,12 +50,17 @@ Each service is built using Spring Boot. To deploy them, you must run them indep
 The services are configured to run on the following server ports:
 - `userservice` = port 8085
 - `adservice` = port 8189
-- `listingservice` = port 8190
-
+- `listingservice` = port 8190  
+  
+When you start up the services in this order, the first two will generate some example data and insert them to their respective db.
+  
 To run:
 - `mvn install`
 - `mvn package`
-- `mvn springboot:run`
+- `mvn springboot:run`  
+
+Swagger UI is available for `listingservice` at [http://localhost:8190/listing-service/swagger-ui/index.html](http://localhost:8190/listing-service/swagger-ui/index.html).
+
 
 #### 3.2. Front-End Deployment
 
