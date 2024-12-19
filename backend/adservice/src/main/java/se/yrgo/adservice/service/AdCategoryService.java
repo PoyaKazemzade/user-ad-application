@@ -22,12 +22,12 @@ public class AdCategoryService {
     @PostConstruct
     public void createCategories() {
         final List<String> categoryNames = List.of(
-                "computers and gaming",
-                "phones",
-                "vehicles",
-                "clothing",
-                "animals",
-                "furniture"
+                "Computers and gaming",
+                "Phones",
+                "Vehicles",
+                "Clothing",
+                "Animals",
+                "Furniture"
         );
 
         for (String categoryName : categoryNames) {

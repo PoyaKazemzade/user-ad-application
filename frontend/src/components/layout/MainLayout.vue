@@ -19,7 +19,6 @@
       <!-- Right aligned nav items -->
       <BNavbarNav class="ms-auto mb-2 mb-lg-0">
         <BNavItemDropdown right>
-          <!-- Using 'button-content' slot -->
           <template #button-content>
             <em>User</em>
           </template>
@@ -29,7 +28,12 @@
       </BNavbarNav>
       <BNavForm class="d-flex">
         <BFormInput class="me-2" placeholder="Search"/>
-        <BButton type="submit" variant="outline-success">Search</BButton>
+        <BButton
+            @click="doSearch"
+            type="submit"
+            variant="outline-success">
+          Search
+        </BButton>
       </BNavForm>
     </BCollapse>
   </BNavbar>
@@ -46,6 +50,24 @@
 </template>
 
 <script setup lang="ts">
+import {useRouter} from 'vue-router';
+
+const router = useRouter();
+
+const doSearch = (event: Event) => {
+  event.preventDefault();
+  const input = (event.target as HTMLElement).parentElement?.querySelector('input') as HTMLInputElement;
+  const query = input?.value.trim();
+
+  if (query) {
+    router.push({
+      path: '/home/buy',
+      query: {q: query}, // Add search term as a query parameter
+    });
+  }
+};
+
+
 </script>
 
 <style scoped>

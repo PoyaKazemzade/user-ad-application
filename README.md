@@ -4,6 +4,14 @@
 
 The **simple classifieds platform** is a simple application designed allow users to publish and manage ads for items they want to sell. The system is built using a microservices architecture, ensuring scalability, modularity, and resilience. The front-end is developed using Vue 3.
 
+Each microservices has its own database. DBMS used is H2 with file based approach for simplicity and lightweight during development.
+
+The system handles asynchronous communication between `adservice` (provider) and `listingservice` (consumer) using the message broker ActiveMQ.
+
+## Prerequisites
+- Java 17+
+- ActiveMQ
+
 ## Features
 
 ### 1. Microservices Architecture
@@ -18,9 +26,6 @@ The application is composed of three microservices, each responsible for a speci
   
 - **Listing Service (`listingservice`)**
   - Management of lists of ads aswell as enabling searching and filtering for ads. For its db, it prioritizes read performance and may sacrifice some normalization and strict referential integrity in favor of speed and scalability. Keeps an updated count on how many ads exist in each ad category.
-  
-- **Messaging Service (`registry`)**
-  - Handles asynchronous communication between `adservice` (provider) and `listingservice` (consumer) using the message broker ActiveMQ.
 
 ### 2. Front-End: Vue UI
 
@@ -35,8 +40,8 @@ The front-end is developed using Vue 3, Bootstrap-vue-next and Typescript. It ai
 
 #### 3.1. Backend Services (Microservices)
 
-Each service is built using Spring Boot. To deploy them, you must run them independently on localhost.
-*NOTE* You must run the services in the following order:
+Each service is built using Spring Boot. To deploy them, you must run them independently on localhost.  
+*Note!* Make sure ActiveMQ is up and running locally. You must then run the services in the following order:
 1. `userservice`
 2. `adservice`
 3. `listingservice`
@@ -44,12 +49,17 @@ Each service is built using Spring Boot. To deploy them, you must run them indep
 The services are configured to run on the following server ports:
 - `userservice` = port 8085
 - `adservice` = port 8189
-- `listingservice` = port 8190
-
+- `listingservice` = port 8190  
+  
+When you start up the services in this order, the first two will generate some example data and insert them to their respective db.
+  
 To run:
 - `mvn install`
 - `mvn package`
-- `mvn springboot:run`
+- `mvn springboot:run`  
+
+Swagger UI is available for `listingservice` at [http://localhost:8190/listing-service/swagger-ui/index.html](http://localhost:8190/listing-service/swagger-ui/index.html).
+
 
 #### 3.2. Front-End Deployment
 
@@ -67,7 +77,10 @@ From the frontend directory run:
 
 This will start the development server at http://localhost:5173 (probably, port may vary...).
 
-### 4. Microservices Architecture with Messaging
+### 4. Screenshots frontend
+![image](https://github.com/user-attachments/assets/dd6be129-0d27-437b-8076-ea0ca7880a01)
+
+### 5. Microservices Architecture with Messaging
 
     
     +--------------------+
@@ -77,7 +90,7 @@ This will start the development server at http://localhost:5173 (probably, port 
     |                    |
     +---------+----------+
             |
-            | 1. UI sends a request to services REST controllers API (via HTTP).
+            | 1. UI sends a request to service's REST API (via HTTP).
             |
             v
     +---------+----------+

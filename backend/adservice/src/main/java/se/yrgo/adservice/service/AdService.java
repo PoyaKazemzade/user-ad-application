@@ -14,6 +14,7 @@ import se.yrgo.adservice.domain.Ad;
 import se.yrgo.adservice.domain.AdCategory;
 import se.yrgo.adservice.dto.AdDto;
 import se.yrgo.adservice.dto.AdResponseDto;
+import se.yrgo.adservice.exception.UserNotFoundException;
 import se.yrgo.adservice.jms.AdMessageProducer;
 import se.yrgo.adservice.jms.DeleteAdMessageProducer;
 
@@ -62,15 +63,16 @@ public class AdService {
 
     public AdResponseDto getAdById(Integer id) {
         Ad ad = adRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Ad not found"));
+                .orElseThrow(() -> new UserNotFoundException("Ad not found!"));
         return new AdResponseDto(ad);
     }
 
     public Ad createAd(AdDto adDto) {
         boolean userExists = checkIfUserExists(adDto.getUserName());
         if (!userExists) {
-            throw new IllegalArgumentException("User does not exist in the external system");
+            throw new UserNotFoundException("User does not exist!");
         }
+
 
         AdCategory category = adCategoryRepository.findById(adDto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
@@ -136,21 +138,5 @@ public class AdService {
             throw new RuntimeException("Unexpected error while checking user existence: " + e.getMessage(), e);
         }
     }
-
-    //to be deleted
-//    public List<AdResponseDto> getAllAds() {
-//        List<Ad> allAdsInRepository = adRepository.findAll();
-//
-//        return allAdsInRepository.stream()
-//                .map(AdResponseDto::new)
-//                .collect(Collectors.toList());
-//    }
-    //to be deleted
-//    public List<AdResponseDto> getAdsByCategory(Integer categoryId) {
-//        List<Ad> ads = adRepository.findByCategory_Id(categoryId);
-//        return ads.stream()
-//                .map(AdResponseDto::new) // Map each Ad to AdResponseDto
-//                .collect(Collectors.toList());
-//    }
 
 }

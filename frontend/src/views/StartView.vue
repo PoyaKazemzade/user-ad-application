@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="text-center">Welcome to Bazaar</h1>
-    <p class="bg-primary text-bg-primary">Your favorite online marketplace</p>
+    <p class="bg-primary text-bg-primary p-2">Your favorite online marketplace</p>
   </div>
   <div class="parent">
     <div class="div1">
@@ -12,18 +12,18 @@
         "I just wanna buy your stuff." - anonymous
       </span>
     </div>
-    <div class="div3 bg-primary text-bg-primary">
+    <div class="div3 bg-primary text-bg-primary p-2">
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nullam sed metus id metus elementum facilisis.
-        In orci mi, interdum sit amet arcu ut, egestas luctus sapien.
-        Praesent viverra tortor enim, et rutrum augue aliquam nec.
-        Curabitur porta tempus vehicula. Aenean id lobortis turpis.
+        Looking to buy or sell an item? Bazaar has got you covered. 
+        With more than 10 000+ new items added by users daily you will surely
+        get connected and find what you are looking for.
       </p>
       <p>
+        Lorem ipsum neon.
         Phasellus ullamcorper turpis ut odio congue, nec hendrerit dui mollis.
         Curabitur ornare ex vel orci egestas, eu aliquet ante aliquet.
-        Sed sit amet dolor ac velit malesuada pellentesque.
+        Sed sit amet dolor ac velit malesuada pellentesque. Lei mueloan oen dui
+        itur ornare ex vel orci egestas, eu aliqu.
       </p>
     </div>
     <div class="div4">
